@@ -27,7 +27,10 @@ export default function Layout() {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="sticky top-0 z-40 border-b border-cream-dark bg-cream/90 backdrop-blur">
+      {/* Nota: la cabecera no usa backdrop-blur porque crea un containing block
+          que "atrapa" a los elementos position:fixed interiores (el panel de
+          notificaciones y su cortina), que deben posicionarse respecto al viewport. */}
+      <header className="sticky top-0 z-40 border-b border-cream-dark bg-cream">
         <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-3">
           <NavLink to="/" className="flex items-center gap-2" aria-label="Piar, inicio">
             <img src="/favicon.svg" alt="" className="h-9 w-9" />
@@ -159,8 +162,8 @@ function Bell() {
             className="fixed inset-0 z-40 cursor-default"
             onClick={() => setOpen(false)}
           />
-          <div className="absolute right-0 z-50 mt-2 w-80 max-w-[calc(100vw-2rem)] overflow-hidden rounded-3xl bg-white shadow-card">
-            <div className="flex items-center justify-between border-b border-cream-dark px-4 py-3">
+          <div className="fixed inset-x-3 bottom-4 z-50 flex max-h-[70dvh] flex-col overflow-hidden rounded-3xl bg-white shadow-card sm:absolute sm:inset-x-auto sm:right-0 sm:bottom-auto sm:mt-2 sm:max-h-none sm:w-80">
+            <div className="flex shrink-0 items-center justify-between border-b border-cream-dark px-4 py-3">
               <span className="font-extrabold">Notificaciones</span>
               {items.some((n) => !n.read) && (
                 <button
@@ -172,7 +175,7 @@ function Bell() {
                 </button>
               )}
             </div>
-            <ul className="max-h-80 overflow-y-auto">
+            <ul className="max-h-80 flex-1 overflow-y-auto">
               {items.length === 0 && (
                 <li className="px-4 py-6 text-center text-sm text-cocoa-light">
                   Aún no tienes notificaciones 🕊️

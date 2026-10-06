@@ -130,6 +130,7 @@ npm run lint      # oxlint sin warnings
 | ![Match](docs/screenshots/04-match-toast.png) | ![Matches](docs/screenshots/05-matches.png) |
 | ![Solicitud](docs/screenshots/06-solicitud.png) | ![Panel protectora](docs/screenshots/07-panel-protectora.png) |
 | ![Aprobada](docs/screenshots/08-panel-aprobada.png) | ![Adopciones](docs/screenshots/09-adopciones.png) |
+| ![Feed móvil](docs/screenshots/10-feed-mobile.png) | ![Notificaciones móvil](docs/screenshots/11-notificaciones-mobile.png) |
 
 Las capturas se generan con la demo real:
 

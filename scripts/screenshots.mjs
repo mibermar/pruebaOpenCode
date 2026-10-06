@@ -96,5 +96,12 @@ await page3.waitForTimeout(800)
 await page3.screenshot({ path: `${OUT}/10-feed-mobile.png` })
 console.log('✓ 10-feed-mobile')
 
+// 11. Panel de notificaciones en móvil (hoja inferior, sin recortes)
+await page3.getByRole('button', { name: /notificaciones/i }).click()
+await page3.waitForSelector('text=Aún no tienes notificaciones')
+await page3.waitForTimeout(400)
+await page3.screenshot({ path: `${OUT}/11-notificaciones-mobile.png` })
+console.log('✓ 11-notificaciones-mobile')
+
 await browser.close()
 console.log('Capturas listas en', OUT)

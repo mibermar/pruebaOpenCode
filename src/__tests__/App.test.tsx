@@ -73,4 +73,18 @@ describe('rutas y sesión', () => {
 
     expect(await screen.findByText('Marta')).toBeInTheDocument()
   })
+
+  it('la campana abre y cierra el panel de notificaciones', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+    await user.click(screen.getByRole('button', { name: /entrar como ana/i }))
+    await screen.findByRole('link', { name: /descubrir/i })
+
+    await user.click(screen.getByRole('button', { name: /notificaciones/i }))
+    expect(await screen.findByText('Notificaciones')).toBeInTheDocument()
+    expect(screen.getByText(/aún no tienes notificaciones/i)).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Cerrar notificaciones' }))
+    expect(screen.queryByText('Notificaciones')).not.toBeInTheDocument()
+  })
 })
