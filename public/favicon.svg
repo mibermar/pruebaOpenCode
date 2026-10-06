@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Pajarito cute de Piar -->
+  <circle cx="32" cy="34" r="22" fill="#FF8A80" />
+  <circle cx="32" cy="34" r="22" fill="none" stroke="#F26A60" stroke-width="2" />
+  <!-- barriga -->
+  <ellipse cx="32" cy="42" rx="13" ry="12" fill="#FFF8F0" />
+  <!-- ala -->
+  <path d="M14 32 Q8 40 16 46 Q22 44 22 36 Z" fill="#F26A60" />
+  <!-- ojo -->
+  <circle cx="38" cy="28" r="4.5" fill="#5C4F4A" />
+  <circle cx="39.6" cy="26.4" r="1.6" fill="#fff" />
+  <!-- pico -->
+  <path d="M50 30 L62 33 L50 37 Z" fill="#FFD97D" stroke="#E8B94F" stroke-width="1.5" stroke-linejoin="round" />
+  <!-- penacho -->
+  <path d="M28 13 Q26 6 32 8 Q30 3 36 7 Q38 12 32 14 Z" fill="#7DD3B0" />
+  <!-- patas -->
+  <path d="M26 55 L26 60 M26 60 L22 63 M26 60 L30 63" stroke="#E8B94F" stroke-width="2.5" stroke-linecap="round" fill="none" />
+  <path d="M38 55 L38 60 M38 60 L34 63 M38 60 L42 63" stroke="#E8B94F" stroke-width="2.5" stroke-linecap="round" fill="none" />
+</svg>
