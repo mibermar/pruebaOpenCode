@@ -26,6 +26,10 @@ interface Props {
 const THRESHOLD_X = 110
 const THRESHOLD_Y = -110
 const FLY_MS = 340
+/** Pausa premium del super like: la tarjeta "se carga" con destellos antes de salir */
+const BURST_MS = 240
+/** Ángulos de los destellos radiales del super like (12 repartidos por 360°) */
+const SPARKS = Array.from({ length: 12 }, (_, i) => (i * 360) / 12)
 
 /** Dirección de salida animada según la acción */
 function exitVector(action: SwipeAction): { dx: number; dy: number } {
@@ -41,20 +45,32 @@ export const SwipeCard = forwardRef<SwipeCardHandle, Props>(function SwipeCard(
   const [pos, setPos] = useState({ x: 0, y: 0 })
   const [dragging, setDragging] = useState(false)
   const [leaving, setLeaving] = useState<SwipeAction | null>(null)
+  /** destello premium activo durante el super like */
+  const [burst, setBurst] = useState(false)
   const start = useRef<{ x: number; y: number } | null>(null)
   const moved = useRef(false)
   /** evita dobles commits entre puntero y teclado */
   const leavingRef = useRef(false)
   const isTop = stackIndex === 0
+  /** mientras hay un super like en curso la tarjeta no responde a gestos ni teclas */
+  const locked = burst || leaving !== null
 
   const commit = useCallback(
     (action: SwipeAction) => {
       if (leavingRef.current) return
       leavingRef.current = true
-      setLeaving(action)
-      const { dx, dy } = exitVector(action)
-      setPos({ x: dx, y: dy })
-      window.setTimeout(() => onDecide(action, bird), FLY_MS)
+      const launch = () => {
+        setLeaving(action)
+        const { dx, dy } = exitVector(action)
+        setPos({ x: dx, y: dy })
+        window.setTimeout(() => onDecide(action, bird), FLY_MS)
+      }
+      if (action === 'superlike') {
+        setBurst(true) // destello premium: estrella, destellos y halo antes de despegar
+        window.setTimeout(launch, BURST_MS)
+        return
+      }
+      launch()
     },
     [bird, onDecide],
   )
@@ -62,7 +78,7 @@ export const SwipeCard = forwardRef<SwipeCardHandle, Props>(function SwipeCard(
   useImperativeHandle(ref, () => ({ swipe: commit }), [commit])
 
   function onPointerDown(e: ReactPointerEvent<HTMLElement>) {
-    if (!isTop || leaving) return
+    if (!isTop || locked) return
     moved.current = false
     start.current = { x: e.clientX, y: e.clientY }
     setDragging(true)
@@ -75,7 +91,7 @@ export const SwipeCard = forwardRef<SwipeCardHandle, Props>(function SwipeCard(
   }
 
   function onPointerMove(e: ReactPointerEvent<HTMLElement>) {
-    if (!dragging || !start.current || leaving) return
+    if (!dragging || !start.current || locked) return
     const dx = e.clientX - start.current.x
     const dy = e.clientY - start.current.y
     if (Math.abs(dx) > 6 || Math.abs(dy) > 6) moved.current = true
@@ -83,7 +99,7 @@ export const SwipeCard = forwardRef<SwipeCardHandle, Props>(function SwipeCard(
   }
 
   function onPointerUp() {
-    if (!dragging || leaving) return
+    if (!dragging || locked) return
     setDragging(false)
     const { x, y } = pos
     if (!moved.current) {
@@ -99,7 +115,7 @@ export const SwipeCard = forwardRef<SwipeCardHandle, Props>(function SwipeCard(
   }
 
   function onPointerCancel() {
-    if (leaving) return
+    if (locked) return
     setDragging(false)
     setPos({ x: 0, y: 0 })
   }
@@ -114,7 +130,10 @@ export const SwipeCard = forwardRef<SwipeCardHandle, Props>(function SwipeCard(
     stackIndex === 0
       ? {
           zIndex: 30,
-          transform: `translate(${pos.x}px, ${pos.y}px) rotate(${pos.x / 18}deg)`,
+          transform:
+            burst && !leaving
+              ? 'scale(1.06)' // se infla mientras carga el destello
+              : `translate(${pos.x}px, ${pos.y}px) rotate(${pos.x / 18}deg)`,
           opacity: leaving ? 0 : 1,
           transition: dragging
             ? 'none'
@@ -137,7 +156,7 @@ export const SwipeCard = forwardRef<SwipeCardHandle, Props>(function SwipeCard(
       onPointerUp={onPointerUp}
       onPointerCancel={onPointerCancel}
       onKeyDown={(e) => {
-        if (!isTop) return
+        if (!isTop || locked) return
         if (e.key === 'ArrowRight') commit('like')
         if (e.key === 'ArrowLeft') commit('dislike')
         if (e.key === 'ArrowUp') commit('superlike')
@@ -145,7 +164,7 @@ export const SwipeCard = forwardRef<SwipeCardHandle, Props>(function SwipeCard(
       }}
       className={`absolute inset-0 select-none overflow-hidden rounded-[2rem] bg-white shadow-card ${
         isTop ? 'cursor-grab touch-none active:cursor-grabbing' : ''
-      }`}
+      } ${burst ? 'ring-4 ring-[#8f9fd6]' : ''}`}
       style={style}
     >
       <img
@@ -175,6 +194,28 @@ export const SwipeCard = forwardRef<SwipeCardHandle, Props>(function SwipeCard(
       >
         ⭐ ¡SUPER!
       </div>
+
+      {/* Destello premium del super like: estrella + halo + destellos radiales */}
+      {burst && (
+        <div
+          data-testid="super-like-burst"
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-40 grid place-items-center"
+        >
+          <div className="relative grid h-28 w-28 place-items-center">
+            <span className="absolute inset-0 rounded-full bg-sky blur-2xl animate-super-flash" />
+            <span className="absolute inset-0 rounded-full border-4 border-white/70 animate-super-flash" />
+            <span className="text-7xl drop-shadow-lg animate-super-star">⭐</span>
+            {SPARKS.map((angle) => (
+              <span
+                key={angle}
+                className="absolute left-1/2 top-1/2 -ml-[5px] -mt-[5px] h-2.5 w-2.5 rounded-full bg-white shadow-[0_0_12px_#8f9fd6] animate-super-spark"
+                style={{ '--angle': `${angle}deg` } as CSSProperties}
+              />
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Datos */}
       <div className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/45 to-transparent p-4 pt-14 text-white">

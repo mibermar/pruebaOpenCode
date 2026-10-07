@@ -71,8 +71,10 @@ export default function BirdDetail() {
       toast(
         action === 'dislike'
           ? `Pasaste de ${bird.name} 👋`
-          : `¡Like enviado a la protectora de ${bird.name}! ✨`,
-        action === 'dislike' ? '👋' : '💚',
+          : action === 'superlike'
+            ? `⭐ ¡Super like enviado a la protectora de ${bird.name}!`
+            : `¡Like enviado a la protectora de ${bird.name}! ✨`,
+        action === 'dislike' ? '👋' : action === 'superlike' ? '⭐' : '💚',
       )
       navigate('/')
     } catch (err) {
