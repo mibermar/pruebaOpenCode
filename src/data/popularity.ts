@@ -4,7 +4,8 @@
  * y el ranking «Los más deseados» se ve vivo desde el primer segundo.
  *
  * El contador final en pantalla = este base + los swipes reales de la sesión
- * (like y superlike; los dislikes no cuentan). Ver `birds.getTopBirds()`.
+ * (like y superlike; los dislikes no cuentan). Ver `birds.getTopBirds()` y
+ * `birds.listShelterBirds()` (fichas de «Mis pajaritos» en el panel).
  */
 export const SEED_LIKES: Record<string, number> = {
   b1: 148, // Tornasol · Periquito

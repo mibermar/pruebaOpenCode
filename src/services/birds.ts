@@ -32,10 +32,17 @@ export async function listBirds(filters: BirdFilters = {}): Promise<Bird[]> {
   return filterBirds(loadDb().birds.filter((b) => b.status === 'disponible'), filters)
 }
 
-/** Todas las aves de una protectora, con cualquier estado */
-export async function listShelterBirds(shelterId: string): Promise<Bird[]> {
+/**
+ * Todas las aves de una protectora (cualquier estado) con su contador de
+ * likes, para las fichas de «Mis pajaritos» en el panel.
+ */
+export async function listShelterBirds(shelterId: string): Promise<BirdWithLikes[]> {
   await delay()
-  return loadDb().birds.filter((b) => b.shelterId === shelterId)
+  const db = loadDb()
+  const likes = countLikes(db)
+  return db.birds
+    .filter((b) => b.shelterId === shelterId)
+    .map((b) => ({ ...b, likes: likes.get(b.id) ?? 0 }))
 }
 
 export async function getBird(id: string): Promise<Bird> {
@@ -58,16 +65,26 @@ export interface BirdWithLikes extends Bird {
 export async function getTopBirds(limit = 5): Promise<BirdWithLikes[]> {
   await delay()
   const db = loadDb()
-  const realLikes = new Map<string, number>()
-  for (const s of db.swipes) {
-    if (s.action === 'dislike') continue
-    realLikes.set(s.birdId, (realLikes.get(s.birdId) ?? 0) + 1)
-  }
+  const likes = countLikes(db)
   return db.birds
     .filter((b) => b.status === 'disponible')
-    .map((b) => ({ ...b, likes: (SEED_LIKES[b.id] ?? 0) + (realLikes.get(b.id) ?? 0) }))
+    .map((b) => ({ ...b, likes: likes.get(b.id) ?? 0 }))
     .sort((a, b) => b.likes - a.likes || a.name.localeCompare(b.name))
     .slice(0, limit)
+}
+
+/**
+ * Likes de cada pajarito: la base ficticia del MVP (data/popularity.ts) más
+ * los swipes reales de la sesión (like y superlike). Los dislikes no suman.
+ */
+function countLikes(db: ReturnType<typeof loadDb>): Map<string, number> {
+  const likes = new Map<string, number>()
+  for (const [id, base] of Object.entries(SEED_LIKES)) likes.set(id, base)
+  for (const s of db.swipes) {
+    if (s.action === 'dislike') continue
+    likes.set(s.birdId, (likes.get(s.birdId) ?? 0) + 1)
+  }
+  return likes
 }
 
 export function filterBirds(birds: Bird[], filters: BirdFilters): Bird[] {

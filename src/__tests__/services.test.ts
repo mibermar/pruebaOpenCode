@@ -26,6 +26,15 @@ describe('db (siembra)', () => {
     const db = loadDb()
     expect(db.users).toHaveLength(2)
   })
+
+  it('la siembra no se contamina aunque un test mute lo que ha cargado', () => {
+    const db = loadDb()
+    db.birds.find((b) => b.id === 'b1')!.status = 'adoptado'
+    saveDb(db)
+
+    localStorage.clear() // el estado del archivo anterior no arrastra
+    expect(loadDb().birds.find((b) => b.id === 'b1')?.status).toBe('disponible')
+  })
 })
 
 describe('auth', () => {
@@ -410,5 +419,25 @@ describe('ranking «Los más deseados»', () => {
     const top = await birds.getTopBirds(20)
     expect(top.some((b) => b.id === 'b1')).toBe(false)
     expect(top.every((b) => b.status === 'disponible')).toBe(true)
+  })
+})
+
+describe('pajaritos de la protectora (likes del panel)', () => {
+  it('devuelve solo los de esa protectora con su base de likes', async () => {
+    const list = await birds.listShelterBirds('s1')
+
+    expect(list).toHaveLength(5)
+    expect(list.every((b) => b.shelterId === 's1')).toBe(true)
+    expect(list.find((b) => b.id === 'b1')?.likes).toBe(148) // base de popularity.ts
+    expect(list.find((b) => b.id === 'b2')?.likes).toBe(96)
+  })
+
+  it('suma los likes reales de la sesión y no cuenta los dislikes', async () => {
+    await swipes.sendSwipe('u1', 'b1', 'superlike')
+    await swipes.sendSwipe('u1', 'b2', 'dislike')
+
+    const list = await birds.listShelterBirds('s1')
+    expect(list.find((b) => b.id === 'b1')?.likes).toBe(149) // 148 + 1 super like
+    expect(list.find((b) => b.id === 'b2')?.likes).toBe(96) // el dislike no suma
   })
 })

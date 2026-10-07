@@ -33,8 +33,11 @@ function emptyDb(): Database {
   return {
     version: SCHEMA_VERSION,
     users: [],
-    shelters: [...seedShelters],
-    birds: [...seedBirds],
+    // copias de los objetos semilla: si un test muta lo que ha cargado
+    // (p. ej. poniendo un pájaro en «adoptado»), no debe envenenar la siembra
+    // para el resto del archivo — localStorage.clear() por sí solo no basta
+    shelters: seedShelters.map((s) => ({ ...s })),
+    birds: seedBirds.map((b) => ({ ...b })),
     swipes: [],
     matches: [],
     requests: [],
@@ -56,7 +59,7 @@ export function loadDb(): Database {
   }
   const fresh = emptyDb()
   // los usuarios semilla se insertan aquí para poder importar fakeHash
-  fresh.users = [...seedUsers]
+  fresh.users = seedUsers.map((u) => ({ ...u }))
   saveDb(fresh)
   return fresh
 }

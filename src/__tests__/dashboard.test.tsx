@@ -68,6 +68,19 @@ describe('panel de la protectora', () => {
     expect(screen.getAllByText('En adopción 💚').length).toBe(5)
   })
 
+  it('muestra los likes de cada pajarito en «Mis pajaritos»', async () => {
+    await swipes.sendSwipe('u1', 'b1', 'superlike')
+    await swipes.sendSwipe('u1', 'b2', 'dislike')
+    await openDashboard()
+    await userEvent.click(await screen.findByRole('button', { name: 'Mis pajaritos' }))
+
+    const tornasol = (await screen.findByRole('heading', { name: 'Tornasol' })).closest('li')!
+    expect(within(tornasol).getByText('❤️ 149')).toBeInTheDocument() // 148 base + 1 super like
+
+    const canuto = screen.getByRole('heading', { name: 'Canuto' }).closest('li')!
+    expect(within(canuto).getByText('❤️ 96')).toBeInTheDocument() // los dislikes no suman
+  })
+
   it('crea un pajarito nuevo con el formulario', async () => {
     await openDashboard()
     await userEvent.click(await screen.findByRole('button', { name: 'Mis pajaritos' }))

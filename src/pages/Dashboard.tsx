@@ -9,6 +9,7 @@ import {
   matches as matchesApi,
   requests as requestsApi,
 } from '../services'
+import type { BirdWithLikes } from '../services/birds'
 import type { RequestWithContext } from '../services/requests'
 import { useApp } from '../store/context'
 
@@ -26,7 +27,7 @@ export default function Dashboard() {
 
   const [tab, setTab] = useState<Tab>('solicitudes')
   const [reqs, setReqs] = useState<RequestWithContext[] | null>(null)
-  const [birds, setBirds] = useState<Bird[] | null>(null)
+  const [birds, setBirds] = useState<BirdWithLikes[] | null>(null)
   const [matchCount, setMatchCount] = useState(0)
   const [formOpen, setFormOpen] = useState(false)
   const [editing, setEditing] = useState<Bird | undefined>(undefined)
@@ -193,6 +194,12 @@ export default function Dashboard() {
                         <h3 className="font-extrabold">{b.name}</h3>
                         <span className="rounded-full bg-cream-dark px-2 py-0.5 text-[10px] font-extrabold">
                           {BIRD_STATUS[b.status]}
+                        </span>
+                        <span
+                          title="Likes recibidos"
+                          className="rounded-full bg-coral/10 px-2 py-0.5 text-[10px] font-extrabold text-coral-dark"
+                        >
+                          ❤️ {b.likes}
                         </span>
                       </div>
                       <p className="text-xs text-cocoa-light">
