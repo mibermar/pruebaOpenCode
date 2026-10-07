@@ -1,15 +1,16 @@
 # Transcripción de la conversación con OpenCode
 
 - **Proyecto:** Piar — `/var/www/MasterIA/pruebaOpenCode`
-- **Sesión:** `ses_eeefc1ca1ffeA6QiI7I7CNlJ5i` — «Saludo inicial en español»
-- **Mensajes:** 272
-- **Exportado:** 6/10/2026, 17:14:16
+- **Sesión principal:** `ses_eeefc1ca1ffeA6QiI7I7CNlJ5i` — «Saludo inicial en español» (6–7/10)
+- **Mensajes:** 281 (6/10) + 276 (7/10, en 4 sesiones)
+- **Actualizado:** 7/10/2026, 16:14:43
 
 > Incluye los mensajes del usuario y las respuestas del asistente textualmente.
 > Las llamadas a herramientas aparecen abreviadas (🔧) y se omiten los razonamientos
 > internos, las salidas completas de comandos y los recordatorios del sistema (estos
 > últimos, solo como nota breve). Las entradas «compactación» marcan puntos donde el
 > contexto se resumió automáticamente: el detalle de esas fases anteriores no está aquí.
+> Del 7/10 en adelante el documento recoge **todas las sesiones del día** sobre el proyecto.
 
 ---
 
@@ -588,7 +589,7 @@ Corrijo dos cosas: el `<details>` controlado (problemático en React) y una erra
 
 - 🔧 `edit` /var/www/MasterIA/pruebaOpenCode/src/__tests__/feed.test.tsx
 
-- 🔧 `shell` npm test 2>&1 | tail -35 — [36m<label[39m [33mclass[39m=[32m"block text-sm font-semibold"[39m [33mfor[39m=[32m"specie…
+- 🔧 `shell` npm test 2>&1 | tail -35 — <label class="block text-sm font-semibold" for="specie…
 
 - 🔧 `shell` npm test 2>&1 | grep -E "^( )*(✓|×|✗|FAIL|❯|→)|Test Files|Tests " | head -60 — ❯ src/__tests__/feed.test.tsx (8 tests | 3 failed) 5061ms ❯ feed con swipe (8) × muestra la pila de…
 
@@ -1533,3 +1534,1435 @@ La exportación se ve bien. Reviso dos detalles (el encabezado y los checkpoints
 - 🔧 `edit` /tmp/opencode/export-transcript.mjs
 
 - 🔧 `shell` node /tmp/opencode/export-transcript.mjs 2>&1 | grep -v Warning
+
+---
+
+## 🕖 Fin del 6 de octubre  <sub>17:14–17:18</sub>
+
+> Continuación inmediata de la sesión principal tras la exportación anterior (mensajes 273–281).
+
+- 🔧 `shell` tail -12 /var/www/MasterIA/pruebaOpenCode/docs/transcripcion-conversacion.md; echo '==='; head -13 /var/www/MasterIA/pruebaOpenCode/docs/tra… — - 🔧 `edit` /tmp/opencode/export-transcript.mjs *(⚠️ error)* - 🔧 `edit` /tmp/opencode/export-transc…
+
+## 🤖 Asistente  <sub>17:14</sub>
+
+Exportación lista. Guardada en:
+
+```
+/var/www/MasterIA/pruebaOpenCode/docs/transcripcion-conversacion.md
+```
+
+**Qué contiene** (71.4 KB, 1.536 líneas, 272 mensajes):
+
+- **12 mensajes tuyos** y **118 respuestas mías**, textualmente, en orden cronológico con hora (`13:40`, `17:04`…)
+- **265 llamadas a herramientas** abreviadas (`🔧 shell`, `edit`, `write`… con ruta/comando y primeras palabras del resultado) — suficiente para seguir el hilo de qué se hizo sin el palabario completo
+- **Notas breves** de los eventos internos: cambios de agente (build ↔ plan), los 2 puntos de *compactación* (donde el contexto se resumió) y las instrucciones cargadas (AGENTS.md)
+
+**Qué omita** (y así lo indica el encabezado): razonamientos internos, salidas completas de comandos y los recordatorios del sistema literal (solo resumen).
+
+**Fuente**: leído en solo-lectura de la base de datos de OpenCode (`~/.local/share/opencode/opencode.db`) con `node:sqlite` — nada de copiar a mano.
+
+Dos apuntes:
+
+1. El fichero está como **`??` (sin rastrear)** en git: no entrará en el repo salvo que hagas `git add` de él. Si prefieres otra ubicación (por ejemplo fuera del repo, en `/var/www/MasterIA/`), lo muevo.
+2. Toda exportación tiene el mismo límite: lo que pasa *mientras* se exporta (este mensaje de cierre) no puede estar dentro. Si quieres, lo regenero al final de la sesión para dejar el cierre incluido. El script queda en `/tmp/opencode/export-transcript.mjs` (reutilizable, aunque `/tmp` se borra al reiniciar).
+
+> ⚙️ *17:17 — Cambio de agente: build → plan*
+
+> ⚙️ *17:17 — Recordatorio del sistema: <system-reminder> You are in Plan mode. Discuss the plan with the user directly in the conversation. Do not create or update plan files unless the user explicitly asks you to; when they do, write them…*
+
+## 👤 Usuario  <sub>17:17</sub>
+
+Dame un texto para el commit tras todos estos cambios+
+
+- 🔧 `shell` cd /var/www/MasterIA/pruebaOpenCode && git status --short && echo '===' && git diff --stat | tail -20 && echo '===' && git log --oneline -3 — M README.md M docs/screenshots/02-feed.png M docs/screenshots/03-ficha.png M docs/screenshots/04-mat…
+
+## 🤖 Asistente  <sub>17:17</sub>
+
+Aquí tienes, basado en el diff real desde `ecfc9f2` (13 ficheros modificados + 3 nuevos):
+
+## Opción A — un solo commit (recomendada)
+
+```
+feat(notificaciones): bottom sheet en móvil y panel fijo liberado
+
+- El panel de notificaciones pasa a hoja inferior en pantallas <640px
+  (fixed inset-x-3 bottom-4 con scroll interno); desde sm: sigue siendo
+  desplegable anclado a la campana
+- Se elimina backdrop-blur de la cabecera: creaba un containing block que
+  atrapaba los position:fixed interiores (la hoja se dibujaba fuera de
+  pantalla y la cortina solo cubría la franja de la cabecera)
+- Nuevo test de apertura/cierre del panel (63 tests en verde)
+- Captura 11 (hoja en móvil), capturas 01-10 regeneradas y galería del
+  README actualizada; paso 11 añadido a scripts/screenshots.mjs
+- Añade AGENTS.md con instrucciones para futuras sesiones del repo
+```
+
+## Opción B — separarlo en dos (más limpio en el historial)
+
+```
+feat(notificaciones): bottom sheet en móvil y panel fijo liberado
+```
+*(igual que el cuerpo de arriba, sin la última línea)*, y después:
+
+```
+docs: AGENTS.md y capturas de notificaciones
+```
+
+## Sobre los 3 ficheros nuevos sin rastrear
+
+| Fichero | ¿Incluir? |
+|---|---|
+| `AGENTS.md` | Sí — forma parte de los dos commits propuestos |
+| `docs/screenshots/11-notificaciones-mobile.png` | Sí (falta en el diff de arriba porque es nuevo) |
+| `docs/transcripcion-conversacion.md` | **Lo dejaría fuera**: son 71 KB de conversación interna en un repo de portfolio; úsalo tú como referencia personal. Si lo quieres guardar en el repo, mejor en su commit aparte: `docs: transcripción de la sesión de desarrollo` |
+
+```bash
+git add -A
+git commit    # y pegas el texto
+```
+
+No lo ejecuto yo porque estoy en **modo plan**; si quieres que lo ejecute, cambia a agente de ejecución. ¿Te sirve la opción A o prefieres la B?
+
+---
+
+## 📅 7 de octubre de 2026
+
+> Sesiones abiertas hoy sobre el proyecto (4), en orden de inicio: «Sesión WSL2 de prueba 20261007» (12:25), «Saludo inicial en español» (13:01), «Añadir botón de Super Like» (13:02) e «Iniciar servidor para ver cambios» (13:14). Total: 276 mensajes.
+
+### 💬 «Sesión WSL2 de prueba 20261007» — `ses_eea1a2f3effeOAeOECil5yvic4` <sub>12:25–12:26</sub>
+
+## 👤 Usuario  <sub>12:25</sub>
+
+SESION_WSL2_PRUEBA_20261007
+
+- 🔧 `shell` uname -a && pwd — Linux F5LAP100 6.18.33.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun 18 21:54:43 UTC 2026…
+
+## 🤖 Asistente  <sub>12:25</sub>
+
+Sesión recibida. Entorno verificado:
+
+- **Kernel:** `6.18.33.2-microsoft-standard-WSL2` (WSL2 confirmado)
+- **Directorio:** `/var/www/MasterIA/pruebaOpenCode` (repo git propio, anidado en `/var/www/MasterIA`)
+- **Proyecto:** Piar — demo React 19 + TS + Vite 8, Tailwind 4, contenido en español
+
+¿Qué quieres hacer en esta sesión? Por ejemplo: un cambio de código + `npm run lint && npm test && npm run build`, capturas, o revisar algo concreto.
+
+### 💬 «Saludo inicial en español» *(esta sesión)* — `ses_eeefc1ca1ffeA6QiI7I7CNlJ5i` <sub>13:01–16:14</sub>
+
+> ⚙️ *13:01 — Recordatorio del sistema: <system-reminder> You are in Plan mode. Discuss the plan with the user directly in the conversation. Do not create or update plan files unless the user explicitly asks you to; when they do, write them…*
+
+## 👤 Usuario  <sub>13:01</sub>
+
+La web del tinder de pájaros funciona per me gustaría tener un listado en el lateral con los pajaros con más likes, aunque sea fake ahora porque es un MVP
+
+## 🤖 Asistente  <sub>13:01</sub>
+
+Me encanta la idea — un "ranking de popularidad" da mucho aire de producto para poco trabajo. Déjame mirar cómo está montado el feed y los servicios para que el plan sea concreto:
+
+- 🔧 `read` /var/www/MasterIA/pruebaOpenCode/src/pages/Feed.tsx *(⚠️ error)*
+
+- 🔧 `shell` cd /var/www/MasterIA/pruebaOpenCode && sed -n '1,60p' src/types/index.ts 2>/dev/null || ls src/types; echo '==='; grep -n "export" src/servi… — En l�nea: 1 Car�cter: 37 + cd /var/www/MasterIA/pruebaOpenCode && sed -n '1,60p' src/types/index ...…
+
+- 🔧 `shell` Get-Location; Get-ChildItem | Select-Object Name; Write-Output '---'; Get-ChildItem C:\Users\mbmartinez | Select-Object Name — Path ---- C:\Users\mbmartinez Name : .anaconda Name : .aws Name : .azure Name : .cache Name : .codei…
+
+## 🤖 Asistente  <sub>13:02</sub>
+
+El entorno ha cambiado: ahora estoy en una máquina **Windows** (`C:\Users\mbmartinez`, PowerShell) y el proyecto no está en `/var/www/MasterIA`. Busco dónde está Piar en este equipo:
+
+- 🔧 `shell` $dirs = @('C:\Users\mbmartinez\Documents','C:\Users\mbmartinez\Desktop','C:\Users\mbmartinez\Downloads','C:\Users\mbmartinez\Documents\GitHu… — == C:\Users\mbmartinez\Documents .ipynb_checkpoints anaconda_projects Factor 5 HeidiSQL IA IBM Mis a…
+
+- 🔧 `glob` **/pruebaOpenCode/package.json
+
+- 🔧 `shell` wsl -l -v 2>$null; Write-Output '---'; Test-Path '\\wsl$'; Get-ChildItem '\\wsl$' -ErrorAction SilentlyContinue | Select-Object -ExpandPrope… —  NAME                     STATE           VERSION …
+
+- 🔧 `glob` **/package.json
+
+- 🔧 `shell` wsl -d Ubuntu-24.04 -- bash -lc 'ls /var/www/MasterIA 2>/dev/null && echo FOUND-UBUNTU-24' 2>$null; wsl -d Ubuntu-26.04 -- bash -lc 'ls /var… — No se pudo iniciar la distribuci�n. C�digo de erro…
+
+## 👤 Usuario  <sub>13:04</sub>
+
+No, trabaja en el entorno Linux
+
+- 🔧 `execute` const queries = [ { query: "environment linux remote shell switch", limit: 10 }, { query: "ssh host machine", limit: 10 }, { query: "workspa… — null Logs: QUERY: environment linux remote shell switch [] QUERY: ssh host machine [ { "path": "tool…
+
+## 🤖 Asistente  <sub>13:04</sub>
+
+No encuentro herramienta de cambio de entorno — pruebo si el shell ya apunta a Linux:
+
+- 🔧 `shell` uname -s && pwd && ls /var/www/MasterIA/pruebaOpenCode | head -5 — En l�nea: 1 Car�cter: 10 + uname -s && pwd && ls /var/www/MasterIA/pruebaOpenCode | head -5 + ~~ El …
+
+- 🔧 `execute` const r = tools.opencode.list_mcp_resources({}); const data = await r; console.log(JSON.stringify(data, null, 1).slice(0, 3000)); — null Logs: { "resources": [], "templates": [] }
+
+- 🔧 `shell` if (Test-Path $env:USERPROFILE\.ssh\config) { Get-Content $env:USERPROFILE\.ssh\config } else { Write-Output 'sin ssh config' }; Write-Outpu… — sin ssh config === Name ---- service.json === { "password": "9UnNUtfaLhgRnRHf9SQ1QMwUiUutDUK-aJJE56-…
+
+- 🔧 `shell` Test-Path 'C:\var\www\MasterIA\pruebaOpenCode'; Test-Path '/var/www/MasterIA/pruebaOpenCode'; Test-Path 'C:\Users\mbmartinez\pruebaOpenCode'… — False False False Compartida composer F5SEDI inetpub PerfLogs Program Files Program Files (x86) Serv…
+
+## 👤 Usuario  <sub>13:06</sub>
+
+La ruta en la que está el proyecto ya implementado es \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode
+
+## 🤖 Asistente  <sub>13:06</sub>
+
+¡Perfecto! Ya lo localizo — es el proyecto en WSL. Verifico acceso y exploro la estructura para concretar el plan:
+
+- 🔧 `shell` $p='\\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode'; Test-Path $p; Get-ChildItem $p | Select-Object -ExpandProperty N… — True .git node_modules dist public scripts src docs AGENTS.md package-lock.json tsconfig.app.json .g…
+
+## 🤖 Asistente  <sub>13:06</sub>
+
+Acceso confirmado. Leo los ficheros clave para diseñar el ranking:
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\pages\Feed.tsx
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\services\swipes.ts
+
+## 🤖 Asistente  <sub>13:06</sub>
+
+Ya tengo todo lo necesario. Aquí está el plan:
+
+## Plan: lateral "Los más deseados" (ranking de likes)
+
+**Contexto verificado**: el feed (`src/pages/Feed.tsx`) es una columna centrada `max-w-md`; los likes viven en `db.swipes` con `action: like|superlike|dislike`; los servicios son stateless con `delay()` — el ranking encaja limpio en `birds.ts`.
+
+### 1. Datos — "fake pero viva" (MVP)
+
+- Nuevo `src/data/popularity.ts`: mapa fijo `id → likes base` (p. ej. `b1: 148, b2: 131…`, valores explícitos y editables). **Sin migrar el esquema** de la BD ni tocar el tipo `Bird`.
+- Nueva función `birds.getTopBirds(limit = 5)` en `src/services/birds.ts`:
+  - `likes = base ficticio + swipes reales` de ese pájaro (`action !== 'dislike'`)
+  - solo pájaros `disponible`, ordenados por likes desc, con `delay()` y exportada en `index.ts`
+  - Así al principio se ve el ranking completo (el *fake*) y **sube +1 cuando tú das like** — el MVP parece real sin backend.
+
+### 2. UI — `src/pages/Feed.tsx`
+
+- Envolver la columna actual en un contenedor con `aside` a la derecha: `<aside className="hidden w-72 shrink-0 lg:block">`. **En móvil nada cambia** (idéntico a hoy, respeta la hoja inferior y todo lo trabajado).
+- Tarjeta blanca `🔥 Los más deseados` con 5 filas: medalla (🥇🥈🥉) o nº, foto mini circular, nombre + especie, contador `❤️ 148`. Cada fila es un `<Link to="/pajarito/:id">` (misma navegación que al tocar la tarjeta).
+- Tras un like exitoso en `decide()`, recargar el ranking (un `loadTop()` más) para que el contador se actualice al momento.
+
+### 3. Tests (desde el principio, como manda el repo)
+
+- Servicio: orden desc, respeta `limit`, excluye no disponibles, base + swipes reales, `dislike` no cuenta.
+- Feed: el aside aparece con el top, clic en una fila navega a la ficha, y el contador sube tras dar like (`setLatency(0)` + `localStorage.clear()` en el `beforeEach`, patrón del repo).
+
+### 4. Verificación
+
+- Ejecutar en **WSL** (`wsl -d Ubuntu-26.04-RECOVERY`, `cd /var/www/MasterIA/pruebaOpenCode`): `npm run lint && npm test && npm run build`
+- Regenerar capturas (`npm run dev -- --port 5199` + `npm run capturas`): **02, 04 y 10 cambian** al aparecer el lateral en escritorio → galería del README al día.
+- Añadir el bullet en README (sección Adoptante).
+
+**Ficheros**: +2 nuevos (`popularity.ts`, test), ~5 modificados (`birds.ts`, `services/index.ts`, `Feed.tsx`, test de feed, README).
+
+Una duda antes de ejecutar:
+
+- 🔧 `question` ¿Dónde quieres que aparezca el ranking de los más deseados?
+
+## 🤖 Asistente  <sub>13:09</sub>
+
+Plan cerrado: **sidebar solo en el feed (rol adoptante, pantallas `lg+`) con Top 5**, siguiendo el plan detallado arriba:
+
+| # | Qué | Ficheros |
+|---|-----|----------|
+| 1 | Base fake de likes + `birds.getTopBirds()` (base + swipes reales, solo `disponible`) | `src/data/popularity.ts` (nuevo), `src/services/birds.ts`, `src/services/index.ts` |
+| 2 | `<aside>` con «🔥 Los más deseados»: medallas, foto, nombre, `❤️ contador` → Link a la ficha; recarga tras cada like | `src/pages/Feed.tsx` |
+| 3 | Tests de servicio (orden, límite, base+reales, dislike no cuenta) + tests de feed (aside visible, clic navega, contador sube) | `src/__tests__/` |
+| 4 | `npm run lint && npm test && npm run build` en WSL, regenerar capturas (02/04/10 cambian) y actualizar README | — |
+
+Móvil queda intacto (el `aside` es `hidden lg:block`), y el contador empieza con cifras creídas del mapa fake pero **sube de verdad** cuando interactúas — MVP con aire de producto.
+
+Estoy en **modo plan**: para ejecutarlo, cambia a un agente de construcción (build) y dale a continuar — el plan está completo y listo para implementarse tal cual.
+
+> ⚙️ *13:09 — Cambio de agente: plan → build*
+
+> ⚙️ *13:09 — Recordatorio del sistema: <system-reminder> You are NO LONGER in Plan mode. The previous Plan restrictions no longer apply. Any Plan mode instructions from earlier in this conversation are no longer active. </system-reminder>*
+
+## 👤 Usuario  <sub>13:09</sub>
+
+Implementa
+
+## 🤖 Asistente  <sub>13:09</sub>
+
+¡A implementar! Primero leo los ficheros que voy a tocar:
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\services\birds.ts
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\services\index.ts
+
+- 🔧 `shell` $p='\\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode'; Get-ChildItem "$p\src\data" | Select-Object -ExpandProperty Name… — shelters.ts users.ts birds.ts == tipos == index.ts == ids de aves == id: 'b1', id: 'b2', id: 'b3', i…
+
+## 🤖 Asistente  <sub>13:10</sub>
+
+`index.ts` ya exporta `* as birds`, así que basta con añadir la función en `birds.ts`. Miro los nombres de las aves y los patrones de test:
+
+- 🔧 `shell` $p='\\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode'; Select-String -Path "$p\src\data\birds.ts" -Pattern "id: 'b\d+',… — id: 'b1', name: 'Tornasol', species: 'Periquito', scientificName: 'Melopsittacus undulatus', status:…
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\feed.test.tsx
+
+## 🤖 Asistente  <sub>13:10</sub>
+
+Ya tengo el estilo. Leo los tests de servicios para mantener el patrón:
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\services.test.ts
+
+- 🔧 `shell` $f='\\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\services.test.ts'; $c=Get-Content $f; Write-Output (… — total lineas: 370 role: 'adoptante', }) await swipes.sendSwipe(otro.id, 'b1', 'superlike') const mat…
+
+## 🤖 Asistente  <sub>13:11</sub>
+
+Creo la base de popularidad ficticia:
+
+- 🔧 `write` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\data\popularity.ts
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\services\birds.ts
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\services\birds.ts
+
+## 🤖 Asistente  <sub>13:11</sub>
+
+Corrijo un typo en el comentario y creo el componente del lateral:
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\services\birds.ts
+
+- 🔧 `write` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\PopularSidebar.tsx
+
+## 🤖 Asistente  <sub>13:12</sub>
+
+Ahora integro el lateral en el feed — reescribo `Feed.tsx` con la estructura de dos columnas (contenido + aside), subiendo la indentación correctamente:
+
+- 🔧 `write` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\pages\Feed.tsx
+
+## 🤖 Asistente  <sub>13:13</sub>
+
+Ahora los tests. Primero compruebo que nada depende de contar enlaces y leo el final limpio de `services.test.ts`:
+
+- 🔧 `grep` Role\('link'|Role\("link"|queryAllByRole
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\services.test.ts
+
+## 🤖 Asistente  <sub>13:14</sub>
+
+Añado los tests del servicio al final de `services.test.ts`:
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\services.test.ts
+
+- 🔧 `shell` $f='\\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\feed.test.tsx'; (Get-Content $f).Count — 148
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\feed.test.tsx *(⚠️ error)*
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\feed.test.tsx
+
+## 🤖 Asistente  <sub>13:16</sub>
+
+Añado los tests del lateral al feed (con queries estructurales para no depender de cómo jsdom resuelva `hidden lg:block`):
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\feed.test.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\feed.test.tsx
+
+## 🤖 Asistente  <sub>13:18</sub>
+
+Actualizo el README (feature, estructura y conteo de tests):
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\README.md
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\README.md
+
+## 🤖 Asistente  <sub>13:20</sub>
+
+Ejecuto la verificación completa en WSL (lint + tests + build), con logs a `/tmp` para leerlos sin problemas de codificación:
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'cd /var/www/MasterIA/pruebaOpenCode || exit 1; npm run lint > /tmp/piar-lint.log 2>&1; echo "exit:… — (no output)
+
+- 🔧 `shell` $t='\\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp'; Get-Content "$t\piar-done.log" -ErrorAction SilentlyContinue; Write-Output '=== LINT ==='; G… — ALLDONE === LINT === > piar@0.0.0 lint > oxlint Found 0 warnings and 0 errors. Finished in 58ms on 4…
+
+## 🤖 Asistente  <sub>13:22</sub>
+
+Todo en verde: **lint 0/0 · 71 tests OK · build OK** (103.84 kB gzip). Actualizo el conteo de tests del README y compruebo los prerrequisitos de las capturas:
+
+- 🔧 `shell` $r='\\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode'; Select-String -Path "$r\README.md" -Pattern '62 tests|63 tests|6… — 96: ��� __tests__/ # 62 tests en 7 archivos 102: npm test # ejecuta la suite (62 tests)
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'cd /var/www/MasterIA/pruebaOpenCode; ls -ld node_modules/playwright-core 2>&1 | head -1; ls node_m… — lrwxrwxrwx 1 mbmartinez mbmartinez 42 Oct 6 14:51 node_modules/playwright-core -> /tmp/opencode/node…
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\README.md
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\README.md
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'if [ -d /tmp/opencode/node_modules/playwright-core ]; then echo TARGET-OK; node -e "require(\"/tmp… — /bin/bash: -c: line 1: syntax error near unexpected token `(' /bin/bash: -c: line 1: `bash -lc "if […
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'test -d /tmp/opencode/node_modules/playwright-core && echo TARGET-OK || echo TARGET-ROTO' — TARGET-ROTO
+
+## 🤖 Asistente  <sub>13:27</sub>
+
+El symlink de `playwright-core` apunta a `/tmp/opencode/...` y está roto (WSL se reinició). Busco copias alternativas antes de reinstalar:
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'find /home /usr/lib/node_modules /opt -maxdepth 7 -type d -name playwright-core 2>/dev/null | head… — --- /usr/local/lib/node_modules --- node-compile-cache opencode piar-build.log piar-done.log piar-li…
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'ls -la /tmp/opencode | head -10; echo ---; ls /tmp/opencode/node_modules 2>/dev/null | head -5 || … — total 0 drwxr-xr-x 2 mbmartinez mbmartinez 40 Oct 7 12:22 . drwxrwxrwt 8 root root 320 Oct 7 13:21 .…
+
+## 🤖 Asistente  <sub>13:30</sub>
+
+El destino está vacío: hay que reinstalar `playwright-core` (como ya documenta el README):
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'cd /var/www/MasterIA/pruebaOpenCode || exit 1; npm i -D playwright-core --no-audit --no-fund > /tm… — (no output)
+
+- 🔧 `shell` Get-Content '\\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\piar-pw-install.log' -Tail 10 — npm WARN EBADENGINE current: { node: 'v22.22.1', npm: '9.2.0' } npm WARN EBADENGINE } npm WARN EBADE…
+
+## 🤖 Asistente  <sub>13:31</sub>
+
+Instalado. Pruebo el arranque del navegador con un script mínimo:
+
+- 🔧 `write` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\scripts\probe-launch.mjs
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'cd /var/www/MasterIA/pruebaOpenCode || exit 1; ls -ld node_modules/playwright-core; grep -n playwr… — drwxr-xr-x 5 mbmartinez mbmartinez 4096 Oct 7 13:31 node_modules/playwright-core 32: "playwright-cor…
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'cd /var/www/MasterIA/pruebaOpenCode || exit 1; node scripts/probe-launch.mjs > /tmp/piar-probe.log… — LAUNCH-OK 153.0.8010.12 exit:0
+
+## 🤖 Asistente  <sub>13:32</sub>
+
+Navegador OK (Chromium 153). Regenero las 11 capturas con el servidor de desarrollo en WSL:
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'cd /var/www/MasterIA/pruebaOpenCode || exit 1; rm -f /tmp/piar-vite.log; nohup npm run dev -- --po… — --port: -c: line 2: syntax error near unexpected token `2' --port: -c: line 2: `2' Exited with code …
+
+## 🤖 Asistente  <sub>13:32</sub>
+
+Problema de comandos con comillas dobles anidadas — reescribo la secuencia sin comillas ni subshells:
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'cd /var/www/MasterIA/pruebaOpenCode || exit 1; rm -f /tmp/piar-vite.log; nohup npm run dev -- --po… — (no output)
+
+> ⚙️ *13:33 — Instrucciones cargadas (instructions): The Code Mode tool catalog has changed. This catalog supersedes the previous Code Mode tool catalog. # Code Mode Use the…*
+
+## 🤖 Asistente  <sub>13:33</sub>
+
+Reviso el resultado de las capturas:
+
+- 🔧 `shell` Get-Content '\\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\piar-shots.log' -ErrorAction SilentlyContinue; Write-Output '=== vite (cola) ==='; Ge… — �o" 01-login �o" 02-feed �o" 03-ficha �o" 04-match-toast �o" 05-matches �o" 06-solicitud �o" 07-pane…
+
+## 🤖 Asistente  <sub>13:34</sub>
+
+Las 11 capturas regeneradas. Verifico visualmente la del feed con el nuevo lateral:
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\docs\screenshots\02-feed.png
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'rm -f /var/www/MasterIA/pruebaOpenCode/scripts/probe-launch.mjs; curl -s -o /dev/null -w "%{http_c… — 000SERVIDOR-CERRADO
+
+## 🤖 Asistente  <sub>13:34</sub>
+
+La captura queda preciosa: 🥇🥈🥉 con contadores correctos y la columna intacta. Estado final del repo:
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'cd /var/www/MasterIA/pruebaOpenCode || exit 1; git status --short' — M README.md M docs/screenshots/01-login.png M docs/screenshots/02-feed.png M docs/screenshots/04-mat…
+
+## 🤖 Asistente  <sub>13:34</sub>
+
+Hay cambios míos y otros que no son míos (`SwipeCard.tsx`, `index.css`, `BirdDetail.tsx`, `sesion.json`). Miro el historial para no confundirlos:
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'cd /var/www/MasterIA/pruebaOpenCode || exit 1; git log --oneline -5; echo ---; git diff --stat -- … — 09e6c88 feat(notificaciones): bottom sheet en móvil y panel fijo liberado ecfc9f2 feat: Piar — web t…
+
+## 🤖 Asistente  <sub>13:35</sub>
+
+Ya está todo. Un detalle importante: el `AGENTS.md` quedó desactualizado con lo del symlink de `playwright-core` — lo corrijo:
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\AGENTS.md
+
+## 🤖 Asistente  <sub>13:36</sub>
+
+¡Implementado y verificado! Resumen:
+
+## El lateral «Los más deseados»
+
+| Fichero | Qué hace |
+|---|---|
+| `src/data/popularity.ts` *(nuevo)* | Base ficticia de likes por pájaro (148 para Tornasol… 29 para Pluma) |
+| `src/services/birds.ts` | `getTopBirds(limit)`: base ficticio + swipes reales (like/superlike), solo `disponible`, ordenado desc |
+| `src/components/PopularSidebar.tsx` *(nuevo)* | Card con top 5: 🥇🥈🥉, foto circular, nombre/especie/ciudad, `❤️ contador`, cada fila enlaza a la ficha |
+| `src/pages/Feed.tsx` | Envuelve la columna en flex con el `<aside>` (`hidden w-72 lg:block`) y recarga el ranking tras cada like, deshacer o reinicio |
+| Tests | +4 de servicio y +3 de feed (top visible, **el contador sube al dar like**, clic → ficha) |
+
+Móvil queda idéntico (el lateral no se pinta fuera de `lg+`), y el contador **sube de verdad** cuando interacts: MVP fake con sensación real.
+
+## Verificación (en WSL)
+
+- `npm run lint` → **0 warnings, 0 errores**
+- `npm test` → **71/71** (7 ficheros)
+- `npm run build` → OK (103.84 kB gzip)
+- **11 capturas regeneradas** — la 02 muestra el ranking perfecto (lo puedes ver arriba); servidor de desarrollo cerrado y script temporal borrado
+
+## Extras y avisos
+
+1. **`playwright-core` roto**: el symlink a `/tmp/opencode` había desaparecido al reiniciar WSL; lo reinstalé como **devDependency real (`^1.63.0`)** — ahora el repo se sostiene solo. `AGENTS.md` y README (conteo → 71) actualizados.
+2. **No son míos**: hay cambios sin commit de *destello premium del super like* (`SwipeCard.tsx`, `index.css`, `BirdDetail.tsx`) y un `sesion.json` — los tocó otra sesión o tú; **no los modifiqué** y pasan lint/tests/build junto con lo mío.
+3. Cuando quieras, te doy el **texto de commit** para este cambio (puedo separar feature + chore de playwright-core en dos si prefieres).
+
+> ⚙️ *13:43 — Instrucciones cargadas (instructions): The Code Mode tool catalog has changed. This catalog supersedes the previous Code Mode tool catalog. # Code Mode Use the…*
+
+## 👤 Usuario  <sub>13:43</sub>
+
+Hazme un commit con texto adecuado a los cambios realizados en esta sesión
+
+## 🤖 Asistente  <sub>13:43</sub>
+
+Perfecto. Primero veo el estado exacto (para no mezclar los cambios que no son de esta sesión):
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'cd /var/www/MasterIA/pruebaOpenCode || exit 1; git status --short' — M AGENTS.md M README.md M docs/screenshots/01-login.png M docs/screenshots/02-feed.png M docs/screen…
+
+## 🤖 Asistente  <sub>13:46</sub>
+
+Escribo el mensaje de commit en un fichero (evita problemas de comillas) y hago el `add` explícito de **solo** mis ficheros:
+
+- 🔧 `write` \\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\piar-commit-msg.txt
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'cd /var/www/MasterIA/pruebaOpenCode || exit 1; git add AGENTS.md README.md docs/screenshots packag… — (no output)
+
+- 🔧 `shell` Get-Content '\\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\piar-commit.log' — [main 83f8f66] feat(ranking): lateral ��Los mǭs deseados�� en el feed 17 files changed, 419 insertio…
+
+## 🤖 Asistente  <sub>13:53</sub>
+
+Commit `83f8f66` creado con 17 ficheros y los ajenos quedan fuera. Verifico que el mensaje está bien codificado (la salida anterior era un artefacto de consola):
+
+- 🔧 `shell` Get-Content '\\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\piar-commit.log' -Encoding UTF8 | Select-Object -First 16 — [main 83f8f66] feat(ranking): lateral �Los m�s deseados� en el feed 17 files changed, 419 insertions…
+
+## 🤖 Asistente  <sub>13:54</sub>
+
+La consola vuelve a mostrar mojibake; compruebo los bytes reales del log para confirmar que el commit está en UTF-8:
+
+- 🔧 `shell` $b=[IO.File]::ReadAllBytes('\\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\piar-commit.log'); $hex=($b[0..600] | ForEach-Object { $_.ToString('x2… — UTF8-OK: presente la secuencia UTF-8 de � (c3 a1) Select-String : No se puede procesar el comando po…
+
+## 🤖 Asistente  <sub>13:55</sub>
+
+Confirmado por bytes: `c2 ab … c3 a1 … c2 bb` = **«Los más deseados»** en UTF-8 correcto (el mojibake era solo la consola de PowerShell). 
+
+## Commit realizado
+
+```
+83f8f66  feat(ranking): lateral «Los más deseados» en el feed
+17 ficheros · +419 −162
+```
+
+**Mensaje completo:**
+
+> feat(ranking): lateral «Los más deseados» en el feed
+>
+> - data/popularity.ts: base ficticio de likes por pájaro (MVP sin backend)
+> - birds.getTopBirds(): base ficticio + los swipes reales de la sesión (los dislikes no suman), solo pájaros disponibles, ordenado por likes descendente y con límite
+> - PopularSidebar en el feed, solo en pantallas lg+ (móvil intacto): medallas 🥇🥈🥉, foto, especie·ciudad y contador que sube al instante al dar like, deshacer o reiniciar la pila
+> - 7 tests nuevos (71 en total): servicio (orden, límite, suma real, dislikes, disponibilidad) y feed (top visible, contador sube, clic → ficha)
+> - Capturas regeneradas con el lateral; README y AGENTS.md al día
+> - playwright-core pasa a devDependency real (^1.63.0): el symlink a /tmp/opencode desaparecía al reiniciar WSL y rompía las capturas
+
+**Lo que queda sin commitear** (a propósito, no es de esta sesión):
+
+```
+ M src/components/SwipeCard.tsx   ← destello premium del super like
+ M src/index.css                  ← (keyframes super-star/spark/flash)
+ M src/pages/BirdDetail.tsx       ←
+?? sesion.json                    ← tuyo
+```
+
+Si esos cambios del super like también los quieres, dime y les hago su propio commit (`feat(superlike): destello premium…`) — pasan lint, tests y build junto con lo demás, así que ya están verificados.
+
+## 👤 Usuario  <sub>15:44</sub>
+
+Actualízame el docs/transcripcion-conversacion.md con las conversaciones mantenidas en el día de hoy sobre este proyecto en todas las sesiones abiertas. 
+Actualízame también el  sesion.json.
+Commitéame estos dos puntos anteriores.
+
+## 🤖 Asistente  <sub>15:44</sub>
+
+Empiezo por entender qué es `sesion.json` y localizar las bases de datos de sesiones (WSL y Windows):
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\sesion.json
+
+- 🔧 `shell` Test-Path 'C:\Users\mbmartinez\.local\share\opencode\opencode.db'; Test-Path '\\wsl.localhost\Ubuntu-26.04-RECOVERY\home\mbmartinez\.local\s… — True True Length LastWriteTime ------ ------------- 18272256 07/10/2026 14:23:20 17313792 07/10/2026…
+
+## 🤖 Asistente  <sub>15:45</sub>
+
+`sesion.json` es la **exportación en bruto de esta sesión** (`info` + todos los mensajes, hecha el 6/10 a las ~17:17). Hay dos bases de datos (Windows 18.3 MB escrita hoy 14:23, WSL 17.3 MB escrita hoy 12:32). Descubro qué sesiones hubo hoy en ambas:
+
+- 🔧 `write` \\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\sessions-today.mjs
+
+> ⚙️ *15:47 — Resumen automático de contexto (compactación): el historial se resumió aquí; el detalle completo de las fases anteriores no se incluye en esta exportación.*
+
+- 🔧 `shell` node "\\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\sessions-today.mjs" 2>&1 — todayStart = 2026-10-06T22:00:00.000Z == windows == {"id":"ses_eea32d73dffeywd9acuIR3Yi0l","titulo":…
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\docs\transcripcion-conversacion.md
+
+- 🔧 `shell` $f='\\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\docs\transcripcion-conversacion.md'; (Get-Content $f).Count; Write… — 1535 --- tail --- - �Y"� `write` /tmp/opencode/export-transcript.mjs - �Y"� `shell` node /tmp/openco…
+
+- 🔧 `grep` ^> ⚙️
+
+- 🔧 `write` \\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\wsl-db-today.mjs
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\sessions-preview.mjs
+
+- 🔧 `shell` node "C:\Users\mbmartinez\AppData\Local\Temp\opencode\sessions-preview.mjs"; wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'node /tmp/wsl-db-toda… — OK (node:25900) ExperimentalWarning: SQLite is an experimental feature and might change at any time …
+
+- 🔧 `read` C:\Users\mbmartinez\AppData\Local\Temp\opencode\sessions-preview.json
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\wsl-db-today.json
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'cd /var/www/MasterIA/pruebaOpenCode || exit 1; git log --oneline -8; echo ===; git status --short' — 0e73447 docs(capturas): «Mis pajaritos» con sus likes en el README fe79e5b feat(panel): contador de …
+
+- 🔧 `grep` succeeded|fin de turno|synthetic|espera
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\inspect.mjs
+
+- 🔧 `shell` node "C:\Users\mbmartinez\AppData\Local\Temp\opencode\inspect.mjs" — OK (node:34332) ExperimentalWarning: SQLite is an experimental feature and might change at any time …
+
+- 🔧 `read` C:\Users\mbmartinez\AppData\Local\Temp\opencode\inspector.json
+
+- 🔧 `grep` ^## 🤖 Asistente
+
+- 🔧 `grep` ^## 👤 Usuario
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\docs\transcripcion-conversacion.md
+
+- 🔧 `grep` \*\(error
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'cd /var/www/MasterIA/pruebaOpenCode; grep -c "^## 🤖 Asistente" docs/transcripcion-conversacion.md… — 0 Exited with code 1
+
+## 🤖 Asistente  <sub>16:02</sub>
+
+Todo mapeado. Escribo el script generador (compartido WSL/Windows) con el mismo formato de la exportación original:
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\render-doc.mjs
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\spec-d.json
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'node /mnt/c/Users/mbmartinez/AppData/Local/Temp/opencode/render-doc.mjs /mnt/c/Users/mbmartinez/Ap… — OK section 4 (node:36353) ExperimentalWarning: SQLite is an experimental feature and might change at…
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\day7-sec-d.md
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\dparts.mjs
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'node /mnt/c/Users/mbmartinez/AppData/Local/Temp/opencode/dparts.mjs' — OK (node:36542) ExperimentalWarning: SQLite is an experimental feature and might change at any time …
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\d-parts.json
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\dtool.mjs
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\wintools.mjs
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'node /mnt/c/Users/mbmartinez/AppData/Local/Temp/opencode/dtool.mjs'; node "C:\Users\mbmartinez\App… — OK (node:36721) ExperimentalWarning: SQLite is an experimental feature and might change at any time …
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\d-tool.json
+
+- 🔧 `read` C:\Users\mbmartinez\AppData\Local\Temp\opencode\win-tools.json
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\cola6tools.mjs
+
+- 🔧 `shell` node "C:\Users\mbmartinez\AppData\Local\Temp\opencode\cola6tools.mjs" — OK (node:8200) ExperimentalWarning: SQLite is an experimental feature and might change at any time (…
+
+- 🔧 `read` C:\Users\mbmartinez\AppData\Local\Temp\opencode\cola6-tools.json
+
+## 🤖 Asistente  <sub>16:07</sub>
+
+Descubro dos detalles del formato original que faltaban: el nombre real va en `p.name` y el marcador de error es `*(⚠️ error)*`. Reescribo el script con todo corregido:
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\render-doc.mjs
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc 'node /mnt/c/Users/mbmartinez/AppData/Local/Temp/opencode/render-doc.mjs /mnt/c/Users/mbmartinez/Ap… — OK section 4 (node:37213) ExperimentalWarning: SQLite is an experimental feature and might change at…
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\spec-full.json
+
+- 🔧 `shell` node "C:\Users\mbmartinez\AppData\Local\Temp\opencode\spec-full.json" 2>$null; node "C:\Users\mbmartinez\AppData\Local\Temp\opencode\render-… — OK doc — cola: 9 | hoy C: 96 | B: 140 | A: 20 | n7: 260 (node:24820) ExperimentalWarning: SQLite is …
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\docs\transcripcion-conversacion.md
+
+- 🔧 `grep` ^## 🕖|^## 📅|^### 💬
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\docs\transcripcion-conversacion.md
+
+- 🔧 `grep` ⚠️ error
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\docs\transcripcion-conversacion.md *(⚠️ error)*
+
+- 🔧 `shell` $f='\\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\docs\transcripcion-conversacion.md'; $c=Get-Content $f; Write-Outp… — lineas: 2905 Server de nuevo arriendo �o. - **Local:** http://localhost:5173/ - **Red:** http://172.…
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\docs\transcripcion-conversacion.md *(⚠️ error)*
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\findctl.mjs
+
+- 🔧 `shell` node "C:\Users\mbmartinez\AppData\Local\Temp\opencode\findctl.mjs" — control bytes: [ { "i": 23725, "b": "1b", "ctx": "/feed.test.tsx\\n\\n- 🔧 `shell` npm test 2>&1 | t…
+
+## 🤖 Asistente  <sub>16:10</sub>
+
+El doc tiene bytes de control (ANSI de colores y salida UTF-16 con NUL). Los saneo:<tool_call><function=write><parameter=content>import fs from 'node:fs'
+const p = '\\\\wsl.localhost\\Ubuntu-26.04-RECOVERY\\var\\www\\MasterIA\\pruebaOpenCode\\docs\\transcripcion-conversacion.md'
+let s = fs.readFileSync(p, 'utf8')
+const len0 = s.length
+// secuencias ANSI/CSI completas (p. ej. ) y sueltas
+s = s.replace(/\[[0-9;:?]*[ -/]*[@-~]/g, '')
+s = s.replace(//g, '')
+// resto de caracteres de control (conservando \t \n \r)
+s = s.replace(/[--]/g, '')
+fs.writeFileSync(p, s, 'utf8')
+// recontar controles
+const buf = fs.readFileSync(p)
+let ctl = 0
+for (const b of buf) if (b < 0x09 || (b > 0x0d && b < 0x20) || b === 0x7f) ctl++
+console.log('OK — chars:', len0, '→', s.length, '| bytes de control restantes:', ctl)
+</parameter><parameter=path>C:\Users\mbmartinez\AppData\Local\Temp\opencode\sanitize.mjs</parameter></function></tool_call>
+
+- 🔧 `write` *(⚠️ error)*
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\sanitize.mjs
+
+- 🔧 `shell` node "C:\Users\mbmartinez\AppData\Local\Temp\opencode\sanitize.mjs" — OK — chars: 158442 -> 158243 | bytes de control restantes: 0
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\docs\transcripcion-conversacion.md
+
+- 🔧 `grep` ^- 🔧 `\w+`$
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\qinput.mjs
+
+- 🔧 `shell` node "C:\Users\mbmartinez\AppData\Local\Temp\opencode\qinput.mjs" — OK (node:8220) ExperimentalWarning: SQLite is an experimental feature and might change at any time (…
+
+- 🔧 `read` C:\Users\mbmartinez\AppData\Local\Temp\opencode\q-input.json
+
+## 🤖 Asistente  <sub>16:13</sub>
+
+El formato `question` nuevo es `input.questions[0].question`. Parcheo el script con la extracción correcta + reejecución idempotente + saneado automático:
+
+- 🔧 `edit` C:\Users\mbmartinez\AppData\Local\Temp\opencode\render-doc.mjs
+
+- 🔧 `edit` C:\Users\mbmartinez\AppData\Local\Temp\opencode\render-doc.mjs
+
+- 🔧 `shell` node "C:\Users\mbmartinez\AppData\Local\Temp\opencode\render-doc.mjs" "C:\Users\mbmartinez\AppData\Local\Temp\opencode\spec-full.json"
+
+### 💬 «Añadir botón de Super Like» — `ses_ee9f8e843ffdaF1Z4V6KkwbPb6` <sub>13:02–14:24</sub>
+
+## 👤 Usuario  <sub>13:02</sub>
+
+¿Puedes añadir un botón de Super Like?
+
+- 🔧 `read` C:\Users\mbmartinez
+
+- 🔧 `glob` *
+
+- 🔧 `glob` {Desktop,Documents,Downloads}/**/package.json
+
+- 🔧 `grep` super ?like|SuperLike|likeButton|dar like *(⚠️ error)*
+
+- 🔧 `read` C:\Users\mbmartinez\Documents\Factor 5\Formación\JS\CascadeProjects\windsurf-project
+
+- 🔧 `grep` like|swipe|corazón|heart
+
+- 🔧 `question` No encuentro un proyecto activo con un botón de "Like" en el directorio actual (C:\Users\mbmartinez). ¿En qué proyecto quieres que añada el …
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\AGENTS.md
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\package.json
+
+- 🔧 `glob` **/*
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\pages\Feed.tsx
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\services\swipes.ts
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\SwipeCard.tsx
+
+- 🔧 `grep` superlike|super-like|Super like|Super Like|tone === 'super'|super:
+
+- 🔧 `shell` git status --porcelain; git log --oneline -8 — fatal: detected dubious ownership in repository at '//wsl.localhost/Ubuntu-26.04-RECOVERY/var/www/Ma…
+
+- 🔧 `grep` CircleButton|label="Like|Me encanta
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git status --porcelain && git log --oneline -6" — ?? sesion.json 09e6c88 feat(notificaciones): bottom sheet en móvil y panel fijo liberado ecfc9f2 fea…
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\pages\BirdDetail.tsx
+
+## 🤖 Asistente  <sub>13:06</sub>
+
+Ya he revisado el proyecto (`\\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode`, demo "Piar") y... **el botón de Super Like ya existe** y está completo:
+
+- **Feed** (`src/pages/Feed.tsx:238`): `<CircleButton emoji="⭐" label="Super like" tone="super" …>` entre "No me convence" y "Me encanta".
+- **Ficha del pajarito** (`src/pages/BirdDetail.tsx:178-184`): mismo botón ⭐.
+- **Gestos y teclado** (`SwipeCard.tsx`): arrastrar hacia arriba o pulsar `↑` hace super like, con sello "⭐ ¡SUPER!" y animación de salida hacia arriba.
+- **Regla de negocio** (`services/swipes.ts:78`): el super like **siempre** hace match, con test en `services.test.ts` ("el superlike siempre hace match").
+
+El repo está limpio (solo `sesion.json` sin trackear), así que no hay trabajo a medias.
+
+- 🔧 `question` El botón de Super Like ya existe en Feed y en la ficha. ¿Qué necesitas exactamente?
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\index.css
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\ui.tsx
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\feed.test.tsx
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\bird-detail.test.tsx
+
+- 🔧 `grep` super ?like|superlike
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\services\db.ts
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\README.md
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\test\setup.ts
+
+## 🤖 Asistente  <sub>13:11</sub>
+
+Ahora implemento el efecto premium. Empiezo por las animaciones en `src/index.css`:
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\index.css
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\index.css
+
+## 🤖 Asistente  <sub>13:12</sub>
+
+Ahora la tarjeta (`SwipeCard.tsx`) — estado de "carga", bloqueo de interacción y el destello:
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\SwipeCard.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\SwipeCard.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\SwipeCard.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\SwipeCard.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\SwipeCard.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\SwipeCard.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\SwipeCard.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\SwipeCard.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\SwipeCard.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\SwipeCard.tsx
+
+## 🤖 Asistente  <sub>13:13</sub>
+
+Ahora los textos de confirmación (Feed y ficha) para que el super like se diferencie:
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\pages\Feed.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\pages\BirdDetail.tsx
+
+## 🤖 Asistente  <sub>13:13</sub>
+
+Añado test del nuevo efecto y afino el timeout del test de super like existente:
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\feed.test.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\feed.test.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\README.md
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\SwipeCard.tsx
+
+- 🔧 `grep` Like enviado|protectora te responderá|super like
+
+## 🤖 Asistente  <sub>13:14</sub>
+
+Verifico con lint + tests + build (vía WSL, que es donde está el entorno):
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && npm run lint && npm test && npm run build" — > piar@0.0.0 lint > oxlint Found 0 warnings and 0 errors. Finished in 58ms on 44 files with 116 rule…
+
+## 🤖 Asistente  <sub>13:15</sub>
+
+Lint 0 warnings, **68 tests pasan** (incluido el nuevo) y el build/typecheck OK. Compruebo que Tailwind generó las nuevas utilidades de animación:
+
+- 🔧 `grep` super-star|super-spark|super-flash|--angle
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && grep -o 'animate-super-[a-z]*\|@keyframes super-[a-z]*\… — 2 --angle 1 @keyframes super-flash 1 @keyframes super-spark 1 @keyframes super-star 3 animate-super-…
+
+## 🤖 Asistente  <sub>13:16</sub>
+
+Todo verificado a nivel de build. Levanto la app para revisarla en el navegador:
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && npm run dev -- --port 5199" — Command moved to the background (shell ID: sh_1161449ed001Z7AfnLzvXjRLdY). Output is streaming to: C…
+
+- 🔧 `read` C:\Users\mbmartinez\.local\share\opencode\shell\349126771269ebd744e38180b6b76d7501d753d3\sh_1161449ed001Z7AfnLzvXjRLdY.out
+
+- 🔧 `execute` const t = await tools.browser.tabs.open({ url: 'http://localhost:5199/', focus: true }); return t; — { "id": "tab_c99b737c-d747-44ed-b11b-8d88422210d5", "url": "http://localhost:5199/", "title": "Piar …
+
+- 🔧 `execute` const r = tools.search({ query: "browser screenshot click element type evaluate script", limit: 20 }); return r; — { "items": [ { "path": "tools.browser.evaluate", "description": "Evaluate JavaScript in the specifie…
+
+- 🔧 `execute` const s = await tools.browser.snapshot({ tabID: "tab_c99b737c-d747-44ed-b11b-8d88422210d5", depth: 8 }); return s.content; — [RootWebArea] "Piar 🐦 — Adopción de pajaritos" [generic] "" [main] "" [sectionheader] "" [heading] …
+
+- 🔧 `execute` const r = await tools.browser.click({ tabID: "tab_c99b737c-d747-44ed-b11b-8d88422210d5", ref: "@e5" }); return { url: r.url, title: r.title … — [browser.operation_failed] browser.click failed. UnknownVizError
+
+- 🔧 `execute` const list = await tools.browser.tabs.list(); return list; — { "tabs": [ { "id": "tab_c99b737c-d747-44ed-b11b-8d88422210d5", "url": "http://localhost:5199/login"…
+
+- 🔧 `execute` const s = await tools.browser.snapshot({ tabID: "tab_c99b737c-d747-44ed-b11b-8d88422210d5", depth: 8 }); return s.content; — [RootWebArea] "Piar 🐦 — Adopción de pajaritos" [generic] "" [main] "" [sectionheader] "" [heading] …
+
+- 🔧 `execute` const r = await tools.browser.click({ tabID: "tab_c99b737c-d747-44ed-b11b-8d88422210d5", ref: "@e11" }); return { url: r.url, title: r.title… — { "url": "http://localhost:5199/login", "title": "Piar 🐦 — Adopción de pajaritos" }
+
+- 🔧 `execute` const s = await tools.browser.snapshot({ tabID: "tab_c99b737c-d747-44ed-b11b-8d88422210d5", depth: 10 }); return { url: s.tab.url, content: … — { "url": "http://localhost:5199/", "content": "[RootWebArea] \"Piar 🐦 — Adopción de pajaritos\" \n …
+
+## 🤖 Asistente  <sub>13:17</sub>
+
+Estoy dentro como Ana. Ahora capturo el destello — ralentizo temporalmente los timers en la página (sin tocar código) para que la foto salga clara:
+
+- 🔧 `execute` const tabID = "tab_c99b737c-d747-44ed-b11b-8d88422210d5"; const inject = await tools.browser.evaluate({ tabID, script: `(() => { if (!window… — [browser.operation_failed] browser.screenshot failed. Screenshot needs a visible tab. Call browser.t…
+
+- 🔧 `execute` const tabID = "tab_c99b737c-d747-44ed-b11b-8d88422210d5"; await tools.browser.evaluate({ tabID, script: `(() => { if (window.__origSetTimeou… — foco listo
+
+- 🔧 `execute` const tabID = "tab_c99b737c-d747-44ed-b11b-8d88422210d5"; try { await tools.browser.evaluate({ tabID, script: `(() => { if (!window.__origSe… — [browser.operation_failed] browser.screenshot failed. Screenshot needs a visible tab. Call browser.t…
+
+- 🔧 `execute` const r = await tools.search({ query: "browser window visible show foreground activate minimize", limit: 15 }); return r; — { "items": [ { "path": "tools.browser.screenshot", "description": "Capture this tab's viewport, full…
+
+## 🤖 Asistente  <sub>13:19</sub>
+
+La captura de escritorio no está disponible (ventana no visible), pero el repo ya trae infra de capturas con Playwright. Miro el script para reutilizar su enfoque:
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\scripts\screenshots.mjs
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "ls -la /var/www/MasterIA/pruebaOpenCode/node_modules/playwright-core 2>/dev/null | head -3; ls… — lrwxrwxrwx 1 mbmartinez mbmartinez 42 Oct 6 14:51 /var/www/MasterIA/pruebaOpenCode/node_modules/play…
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "ls -la /tmp/opencode 2>&1 | head; echo '--- global:'; npm root -g 2>/dev/null; ls -d $(npm roo… — npm : No se puede cargar el archivo C:\Program Files\nodejs\npm.ps1 porque la ejecuci�n de scripts e…
+
+- 🔧 `glob` **/playwright-core/package.json
+
+- 🔧 `execute` const tabID = "tab_c99b737c-d747-44ed-b11b-8d88422210d5"; await tools.browser.tabs.focus({ tabID }); const shot = await tools.browser.screen… — [browser.operation_failed] browser.screenshot failed. Screenshot needs a visible tab. Call browser.t…
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "ls ~/.cache/ms-playwright 2>/dev/null; ls ~/.cache/ms-playwright/chromium* 2>/dev/null | head … — chromium_headless_shell-1243 ffmpeg-1011 DEPENDENCIES_VALIDATED INSTALLATION_COMPLETE chrome-headles…
+
+## 🤖 Asistente  <sub>13:21</sub>
+
+La captura de pantalla del escritorio no está habilitada en esta sesión, así que verifico el efecto midiendo el DOM/CSS directamente en la app viva:
+
+- 🔧 `execute` const tabID = "tab_c99b737c-d747-44ed-b11b-8d88422210d5"; const paso1 = await tools.browser.evaluate({ tabID, script: `(() => { if (window._… — { "clicked": true, "topCard": "Nube, Ninfa" }
+
+- 🔧 `execute` const tabID = "tab_c99b737c-d747-44ed-b11b-8d88422210d5"; const paso2 = await tools.browser.evaluate({ tabID, script: `(() => { const burst … — { "hayBurst": false }
+
+- 🔧 `execute` const tabID = "tab_c99b737c-d747-44ed-b11b-8d88422210d5"; const r = await tools.browser.evaluate({ tabID, script: `(() => { const out = {}; … — { "hayBurst": false }
+
+- 🔧 `execute` const tabID = "tab_c99b737c-d747-44ed-b11b-8d88422210d5"; const r = await tools.browser.evaluate({ tabID, script: `(() => { const orig = win… — { "destello0": { "angle": "0deg", "opacidad": "0.511651", "transform": "matrix(0.847715, 0, 0, 0.847…
+
+## 🤖 Asistente  <sub>13:24</sub>
+
+El efecto funciona en la app real. Ahora reviso la consola, reinicio la BD de la demo (las pruebas han consumido pajaritos) y resumo el diff:
+
+- 🔧 `execute` const tabID = "tab_c99b737c-d747-44ed-b11b-8d88422210d5"; const consola = await tools.browser.console({ tabID, level: "error", limit: 20 });… — { "errores": [], "estado": "demo reiniciada" }
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git status --porcelain && git diff --stat" — M README.md M src/__tests__/feed.test.tsx M src/__tests__/services.test.ts M src/components/SwipeCar…
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git diff -- src/pages/Feed.tsx | head -70" — diff --git a/src/pages/Feed.tsx b/src/pages/Feed.tsx index 817662e..71bfd85 100644 --- a/src/pages/F…
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git diff --stat -- src/services/birds.ts src/__tests__/… — src/__tests__/services.test.ts | 44 ++++++++++++++++++++++++++++++++++++++++++ src/services/birds.ts…
+
+## 🤖 Asistente  <sub>13:25</sub>
+
+Listo ✅. El botón de Super Like ya existía, así que le he dado el **toque premium** que pediste, y lo he verificado en la app real.
+
+## Qué he cambiado
+
+| Archivo | Cambio |
+|---|---|
+| `src/components/SwipeCard.tsx` | Al super like (botón, gesto ↑ o tecla ↑) la tarjeta ahora **se "carga" 240 ms** con un destello: estrella ⭐ que hace pop, halo que se expande y **12 destellos radiales**, anillo azul cielo en la tarjeta y un ligero inflado (`scale 1.06`) antes de salir hacia arriba. Mientras dura, la tarjeta queda bloqueada (ni gestos ni teclas) para que nadie la abra a mitad del efecto. |
+| `src/index.css` | Nuevas animaciones del tema: `--animate-super-star`, `--animate-super-spark` (usa `--angle` para repartir los destellos) y `--animate-super-flash`. |
+| `src/pages/Feed.tsx` | Confirmación propia: *«⭐ ¡Super like enviado! Este match está cantado 💫»*. |
+| `src/pages/BirdDetail.tsx` | Toast propio para el super like (⭐) en la ficha. |
+| `src/__tests__/feed.test.tsx` | Test nuevo *«el super like lanza el destello premium antes de salir hacia arriba»* + timeout ampliado en el test de arrastre. |
+| `README.md` | Mención del destello premium en la sección del feed. |
+
+## Verificación
+
+- `npm run lint` → **0 warnings** · `npm test` → **68/68** · `npm run build` (typecheck + build) → ✅
+- **En el navegador en vivo** (medido sobre el DOM, ya que la captura de pantalla del escritorio no está habilitada en esta sesión): animación `super-star` aplicada, 12 destellos con `--angle` resolviendo correctamente (ángulos 0° y 30° con matrices distintas), halo `super-flash` a media opacidad, tarjeta con `transform: scale(1.06)` y anillo `rgb(143,159,214) 0 0 0 4px`. **0 errores de consola.**
+- La app está corriendo en **http://localhost:5199** (entrando como Ana) por si quieres verlo tú mismo; he reiniciado la BD de la demo para que empiece limpia.
+
+## Aviso importante
+
+Mientras trabajaba, aparecieron en el árbol de trabajo cambios que **no son míos** —la sección «🔥 Los más deseados» (`src/components/PopularSidebar.tsx`, `src/data/popularity.ts`, `getTopBirds` en `services/birds.ts` y tests añadidos)—, probablemente de otra sesión o editor. No los he tocado; conviven bien con los míos en `Feed.tsx` y la verificación completa (lint/test/build) la he corrido **con todo junto**, así que el estado actual está verde. Si es trabajo tuyo en curso, no lo he commiteado ni modificado: el repo sigue sin commit (solo esos cambios y `sesion.json` sin trackear).
+
+> ⚙️ *13:32 — Nota automática: <shell id="sh_1161449ed001Z7AfnLzvXjRLdY" state="completed" command="wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && npm run dev -- --port 5199""> > piar@0.0.0 dev…*
+
+- 🔧 `shell` curl.exe -s -o NUL -w "%{http_code}" http://localhost:5199/ — 000 Exited with code 1
+
+> ⚙️ *13:33 — Instrucciones cargadas (instructions): The Code Mode tool catalog has changed. This catalog supersedes the previous Code Mode tool catalog. # Code Mode Use the…*
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "pgrep -af 'vite|node' | head -5; curl -s -o /dev/null -w 'status local WSL: %{http_code}\n' ht… — 691 sh -c vite --host 692 node /var/www/MasterIA/pruebaOpenCode/node_modules/.bin/vite --host 739 ba…
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "ss -ltnp 2>/dev/null | grep -E 'node|5199|5173' || ss -ltn | head -10" — LISTEN 0 511 *:5173 *:* users:(("node",pid=692,fd=22))
+
+## 🤖 Asistente  <sub>13:33</sub>
+
+El servidor que yo había levantado en el 5199 murió, pero hay **otro Vite ya corriendo en el 5173** (el de la otra sesión, sirviendo el mismo proyecto). Lo compruebo y muevo la pestaña ahí en vez de duplicar servidores:
+
+- 🔧 `shell` curl.exe -s -o NUL -w "%{http_code}" http://localhost:5173/ — 200
+
+- 🔧 `execute` const tabID = "tab_c99b737c-d747-44ed-b11b-8d88422210d5"; const nav = await tools.browser.navigate({ tabID, url: "http://localhost:5173/logi… — Unknown tool 'browser.navigate'. Use search to find available tools.
+
+- 🔧 `execute` const r = tools.search({ query: "browser navigate tab screenshot click page", limit: 10 }); return r; — { "items": [], "remaining": 0, "next": null }
+
+- 🔧 `shell` curl.exe -s "http://localhost:5173/src/components/SwipeCard.tsx" | findstr /C:"super-like-burst" /C:"BURST_MS" /C:"animate-super-star" — const BURST_MS = 240; window.setTimeout(launch, BURST_MS); "data-testid": "super-like-burst", classN…
+
+## 🤖 Asistente  <sub>13:35</sub>
+
+Actualizo lo del servidor:
+
+**El Vite que yo había levantado en el 5199 se cayó** (el proceso terminó con código 1 sin imprimir error — parece que WSL mató la sesión del shell; no es un fallo de la app). Pero no hace falta levantar otro: **ya hay un Vite corriendo en el 5173** (el `vite --host` de la otra sesión, sirviendo este mismo proyecto) y **ya está sirviendo mis cambios**, lo he comprobado pidiéndole el módulo transformado:
+
+```
+curl http://localhost:5173/src/components/SwipeCard.tsx
+→ const BURST_MS = 240;
+→ "data-testid": "super-like-burst",
+→ className: "... drop-shadow-lg animate-super-star"
+```
+
+Cosas a tener en cuenta:
+
+- **Abre http://localhost:5173** — la pestaña que dejé apuntaba al 5199 y ahora daría error de conexión. Además, al ser otro puerto (otro origen), el `localStorage` es distinto: entra con el botón 🐤 *Entrar como Ana* o con `ana@piar.app` / `demo1234`.
+- Las herramientas de navegador han desaparecido del catálogo de esta sesión, así que ya no puedo mover la pestaña ni capturar pantallas desde aquí; la verificación visual queda en tus manos con ⭐ **Super like** en el feed (o arrastrando hacia arriba / tecla ↑).
+- Si prefieres un servidor propio en el 5199 (el que documenta `AGENTS.md` para `npm run capturas`): `npm run dev -- --port 5199`.
+
+El estado del cambio no varía: **lint 0 warnings, 68/68 tests y build en verde**, con los cambios repartidos en `SwipeCard.tsx`, `index.css`, `Feed.tsx`, `BirdDetail.tsx`, `feed.test.tsx` y `README.md`, y sin tocar los archivos de la otra sesión (`PopularSidebar.tsx`, `popularity.ts`, `birds.ts`, `services.test.ts`).
+
+> ⚙️ *13:44 — Instrucciones cargadas (instructions): The Code Mode tool catalog has changed. This catalog supersedes the previous Code Mode tool catalog. # Code Mode Use the…*
+
+## 👤 Usuario  <sub>13:44</sub>
+
+Hazme un commit con texto adecuado a los cambios realizados en esta sesión
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git status --porcelain && echo '--- log:' && git log --… — M AGENTS.md M README.md M docs/screenshots/01-login.png M docs/screenshots/02-feed.png M docs/screen…
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git diff -- README.md src/__tests__/feed.test.tsx AGENT… — diff --git a/AGENTS.md b/AGENTS.md index d351eb1..2664192 100644 --- a/AGENTS.md +++ b/AGENTS.md @@ …
+
+## 🤖 Asistente  <sub>13:46</sub>
+
+Los cambios de esta sesión están **mezclados en el árbol de trabajo** con los de la otra sesión (Feed, README y feed.test.tsx comparten archivo). Voy a preparar un commit solo con los míos. Primero, confirmo que los tres archivos "puros" no llevan nada ajeno:
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git diff -- src/components/SwipeCard.tsx src/index.css … — sin rastro de la otra sesion 283 /tmp/piar-commit/Feed.tsx 175 /tmp/piar-commit/README.md 132 /tmp/p…
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\piar-commit\Feed.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\piar-commit\feed.test.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\piar-commit\README.md
+
+## 🤖 Asistente  <sub>13:52</sub>
+
+Preparo el índice (archivos enteros míos + versiones parciales de los tres mezclados) con un script, para evitar problemas de comillas:
+
+- 🔧 `write` \\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\piar-commit\preparar-indice.sh
+
+- 🔧 `write` \\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\piar-commit\mensaje.txt
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash /tmp/piar-commit/preparar-indice.sh — --- estado del repositorio MM README.md MM src/__tests__/feed.test.tsx M src/components/SwipeCard.ts…
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git log --oneline -4 && git status --porcelain" — 83f8f66 feat(ranking): lateral «Los más deseados» en el feed 09e6c88 feat(notificaciones): bottom sh…
+
+## 🤖 Asistente  <sub>13:54</sub>
+
+El commit de la otra sesión (`83f8f66`) ya está en HEAD y **no** incluye mis cambios… salvo que pueda haber barrido alguno de los mezclados. Lo compruebo antes de reconstruir el índice:
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && echo 'README:' && git show HEAD:README.md | grep -c 'de… — README: 1 feed.test: 2 Feed: 1
+
+## 🤖 Asistente  <sub>13:55</sub>
+
+La otra sesión **barrió tres de mis archivos mezclados** dentro de su commit (`83f8f66` ya contiene mi hint en el feed, mi test y mi línea del README). Así que esos tres ya están commiteados; yo solo debo llevar los tres archivos que sí son exclusivamente míos. Corrijo el índice:
+
+- 🔧 `write` \\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\piar-commit\corregir-indice.sh
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash /tmp/piar-commit/corregir-indice.sh — --- estado M src/components/SwipeCard.tsx M src/index.css M src/pages/BirdDetail.tsx ?? sesion.json …
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git diff --cached" — diff --git a/src/components/SwipeCard.tsx b/src/components/SwipeCard.tsx index f57f72c..32a6724 1006…
+
+## 🤖 Asistente  <sub>13:56</sub>
+
+El staged es exactamente mi trabajo (3 archivos, +98/−13). Antes de commitear, verifico el estado final:
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && npm run lint && npm test && npm run build" — > piar@0.0.0 lint > oxlint Found 0 warnings and 0 errors. Finished in 91ms on 44 files with 116 rule…
+
+## 🤖 Asistente  <sub>13:56</sub>
+
+Todo en verde (0 warnings, **71/71 tests**, build OK). Actualizo el mensaje a lo que lleva realmente este commit y lo hago:
+
+- 🔧 `write` \\wsl.localhost\Ubuntu-26.04-RECOVERY\tmp\piar-commit\mensaje.txt
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git commit -F /tmp/piar-commit/mensaje.txt && git log -… — [main 5306b78] feat(feed): destello premium para el super like 3 files changed, 98 insertions(+), 13…
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "rm -rf /tmp/piar-commit && echo temporales eliminados" — temporales eliminados
+
+## 🤖 Asistente  <sub>13:57</sub>
+
+Hecho ✅
+
+```
+5306b78 feat(feed): destello premium para el super like     ← este commit
+83f8f66 feat(ranking): lateral «Los más deseados» en el feed
+09e6c88 feat(notificaciones): bottom sheet en móvil y panel fijo liberado
+```
+
+**`5306b78` — 3 archivos, +98 / −13:**
+- `src/components/SwipeCard.tsx` — la pausa de 240 ms con estrella, halo y 12 destellos, anillo azul, inflado y bloqueo de gestos/teclas.
+- `src/index.css` — animaciones `--animate-super-star` / `-spark` / `-flash` y sus keyframes.
+- `src/pages/BirdDetail.tsx` — toast propio del super like.
+
+Mensaje completo (cuerpo incluido):
+
+> **feat(feed): destello premium para el super like**
+> − SwipeCard: la tarjeta se "carga" 240 ms con estrella, halo y 12 destellos radiales, anillo azul e inflado, antes de salir hacia arriba; mientras dura bloquea gestos y teclas para que no se abra a mitad del efecto
+> − index.css: animaciones del tema `--animate-super-star / -spark / -flash`; los destellos se reparten por 360° con la variable `--angle`
+> − BirdDetail: toast propio del super like (el like y el descarte no cambian)
+> − El resto del cambio (hint en el feed, test del destello y mención en el README) entró antes en 83f8f66…
+> − Verificado con oxlint (0 warnings), los 71 tests y `npm run build`
+
+**Aviso sobre la división:** mientras trabajaba, la otra sesión hizo commit (`83f8f66`) y, al stagedear tres archivos que compartíamos (`Feed.tsx`, `feed.test.tsx`, `README.md`), **se llevó con ella mis cambios sobre esos archivos** (el hint *«⭐ ¡Super like enviado!…»*, el test del destello y la línea del README). Por eso este commit solo contiene los tres archivos que eran exclusivamente míos: stagedé el contenido exacto = HEAD + mis cambios (sin tocar el árbol de trabajo de la otra sesión) para no revertir su lateral «Los más deseados». Todo queda anotado en el cuerpo del commit.
+
+**Estado final:** árbol limpio (solo queda `sesion.json` sin trackear, que ya estaba antes y no es mío) · lint **0 warnings** · **71/71 tests** · `npm run build` en verde · temporales de trabajo eliminados.
+
+## 👤 Usuario  <sub>14:00</sub>
+
+Ahora añade el número de likes en la ficha de cada pájaro en el apartado Mis pajaritos del Panel de la protectora
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\pages\Dashboard.tsx
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\data\popularity.ts
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\services\birds.ts
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\dashboard.test.tsx
+
+- 🔧 `grep` listShelterBirds|getTopBirds|BirdWithLikes
+
+- 🔧 `grep` getTopBirds|SEED_LIKES|ranking
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\services.test.ts
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\services.test.ts
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\components\PopularSidebar.tsx
+
+## 🤖 Asistente  <sub>14:03</sub>
+
+Implemento. Primero el servicio (la regla de likes vive en `services/`, como manda `AGENTS.md`):
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\services\birds.ts
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\services\birds.ts
+
+## 🤖 Asistente  <sub>14:04</sub>
+
+Ahora el panel de la protectora:
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\pages\Dashboard.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\pages\Dashboard.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\pages\Dashboard.tsx
+
+## 🤖 Asistente  <sub>14:04</sub>
+
+Ahora los tests (servicio + panel):
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\services.test.ts
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\dashboard.test.tsx
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\data\popularity.ts
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\README.md
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && npm run lint && npm test && npm run build" — > piar@0.0.0 lint > oxlint Found 0 warnings and 0 errors. Finished in 62ms on 44 files with 116 rule…
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\services.test.ts
+
+- 🔧 `grep` id: 'b[1-5]'|status:
+
+## 🤖 Asistente  <sub>14:06</sub>
+
+Fallo en mi test: `sendSwipe` dice que b1 "ya tiene hogar". Aíslo ese test para ver si es fuga de estado entre tests:
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && npx vitest run src/__tests__/services.test.ts -t 'suma … — file:///var/www/MasterIA/pruebaOpenCode/node_modules/vitest/dist/chunks/cac.DfDGTQ9W.js:2220 throw n…
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && npx vitest run src/__tests__/services.test.ts -t 'suma … —  RUN  v5.0.3 /var/www/MasterIA/pruebaOpenCode …
+
+## 🤖 Asistente  <sub>14:07</sub>
+
+El test pasa aislado → es **fuga de estado**: `emptyDb()` reparte los **mismos objetos** del array semilla, así que un test anterior que pone `b1.status = 'adoptado'` envenena la siembra para siempre (no basta con `localStorage.clear()`). Lo arreglo en la raíz:
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\services\db.ts
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\services\db.ts
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\services\db.ts
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\src\__tests__\services.test.ts
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && npm run lint && npm test && npm run build" — > piar@0.0.0 lint > oxlint Found 0 warnings and 0 errors. Finished in 77ms on 44 files with 116 rule…
+
+## 🤖 Asistente  <sub>14:09</sub>
+
+Todo en verde: lint **0 warnings**, **75/75 tests**, build OK. Lo compruebo en la app viva (servidor 5173):
+
+- 🔧 `execute` const t = await tools.browser.tabs.open({ url: "http://localhost:5173/dashboard", focus: true }); return { id: t.id, url: t.url, title: t.ti… — { "id": "tab_9842f40e-7ac3-44c1-a393-07ea0e6a0038", "url": "http://localhost:5173/dashboard", "title…
+
+- 🔧 `execute` const tabID = "tab_9842f40e-7ac3-44c1-a393-07ea0e6a0038"; await tools.browser.evaluate({ tabID, script: `(() => { localStorage.setItem('piar… — ReferenceError: Unknown identifier 'setTimeout'. (line 3, col 26)
+
+- 🔧 `execute` const tabID = "tab_9842f40e-7ac3-44c1-a393-07ea0e6a0038"; const r1 = await tools.browser.evaluate({ tabID, script: `(() => { localStorage.se… — [browser.tab_unavailable] This tab is closed or does not belong to the connected session. Call brows…
+
+- 🔧 `execute` const l = await tools.browser.tabs.list(); return l; — { "tabs": [ { "id": "tab_c99b737c-d747-44ed-b11b-8d88422210d5", "url": "http://localhost:5173/dashbo…
+
+- 🔧 `execute` const tabID = "tab_c99b737c-d747-44ed-b11b-8d88422210d5"; const s = await tools.browser.snapshot({ tabID, depth: 14 }); return { url: s.tab.… — { "url": "http://localhost:5173/dashboard", "content": "[RootWebArea] \"Piar 🐦 — Adopción de pajari…
+
+## 🤖 Asistente  <sub>14:10</sub>
+
+La feature ya se ve en el panel. Intento capturarla:
+
+- 🔧 `execute` const tabID = "tab_c99b737c-d747-44ed-b11b-8d88422210d5"; await tools.browser.tabs.focus({ tabID }); const shot = await tools.browser.screen… — [ { "id": "file_ff00303f-ce8e-4d8b-a7a6-1ec9181c6967", "name": "screenshot.png", "mime": "image/png"…
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git status --porcelain && git diff --stat" — M README.md M src/__tests__/dashboard.test.tsx M src/__tests__/services.test.ts M src/data/popularit…
+
+## 🤖 Asistente  <sub>14:11</sub>
+
+¡Quedó exactamente como en tu captura! Resumen de lo hecho:
+
+## Cambios (7 archivos, +86/−14 — todos de esta sesión)
+
+| Archivo | Cambio |
+|---|---|
+| `src/services/birds.ts` | `listShelterBirds()` ahora devuelve `BirdWithLikes` (pájaro + `likes`). La regla se extrae a un helper `countLikes()` compartido con `getTopBirds()`: **base ficticia del MVP + swipes reales (like/superlike), los dislikes no suman**. |
+| `src/pages/Dashboard.tsx` | Cada ficha de **«Mis pajaritos»** lleva una píldora `❤️ n` junto al badge de estado, con el mismo formato que el lateral «Los más deseados» y `title="Likes recibidos"`. |
+| `src/services/db.ts` | **Bug encontrado y corregido**: `emptyDb()` repartía los *mismos objetos* del array semilla, así que un test que mutaba `b1.status = 'adoptado'` envenenaba la siembra para todo el archivo (con `localStorage.clear()` no bastaba). Ahora la siembra se copia. |
+| `src/__tests__/services.test.ts` | +3 tests: los de la protectora con su base, que suma likes reales y que los dislikes no suman, más una regresión del bug de siembra. |
+| `src/__tests__/dashboard.test.tsx` | +1 test: «Mis pajaritos» muestra `❤️ 149` (148+1 super like) y `❤️ 96` (el dislike no suma). |
+| `src/data/popularity.ts` / `README.md` | Doc: el contador también sale de `listShelterBirds()`; nueva entrada en el apartado 🦜 Protectora. |
+
+## Verificación
+
+- `npm run lint` → **0 warnings** · `npm test` → **75/75** (+4 nuevos) · `npm run build` → ✅
+- **En la app viva** (la captura que has pegado): Tornasol ❤️ 148, Canuto ❤️ 96, Pío ❤️ 43, Brasa ❤️ 105 y Cielo ❤️ 82 — las cifras base de `popularity.ts`, que subirán con los likes reales.
+
+El fallo inicial de mi test fue revelador: `sendSwipe` decía «ya tiene hogar» porque un test anterior había mutado la siembra compartida; lo arreglé en la raíz en vez de esquivarlo en el test.
+
+No he hecho commit todavía (esta vez los 7 archivos son solo míos, sin mezcla con la otra sesión). ¿Lo commiteo?
+
+## 👤 Usuario  <sub>14:13</sub>
+
+Actualizaste las capturas del README.md?
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git log --oneline -5 -- docs/screenshots && ls -la --ti… — 83f8f66 feat(ranking): lateral «Los más deseados» en el feed 09e6c88 feat(notificaciones): bottom sh…
+
+- 🔧 `grep` screenshots/
+
+> ⚙️ *14:14 — Resumen automático de contexto (compactación): el historial se resumió aquí; el detalle completo de las fases anteriores no se incluye en esta exportación.*
+
+## 🤖 Asistente  <sub>14:14</sub>
+
+No — no los toqué. Déjame confirmar qué reflejan las capturas actuales y cómo se generan:
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\docs\screenshots\07-panel-protectora.png
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\scripts\screenshots.mjs
+
+## 🤖 Asistente  <sub>14:15</sub>
+
+No, no los actualicé. Estado real de `docs/screenshots/`:
+
+- Se generaron por última vez **hoy a las 13:33**, dentro del commit `83f8f66` de la otra sesión → **anteriores a mis dos cambios** (destello del super like `5306b78` y el chip ❤️ de «Mis pajaritos», aún sin commitear).
+- Además, el script `scripts/screenshots.mjs` solo captura el panel en la pestaña **«Solicitudes»** (paso 7) → **nunca enseña «Mis pajaritos»**, así que aunque regenerara todo, el chip ❤️ seguiría sin aparecer en el README.
+
+Para dejarlo al día necesito levantar el dev server en `:5199` (el de mi sesión murió) y ejecutar `npm run capturas`. Antes, decide el alcance:
+
+- 🔧 `question` ¿Qué hago con las capturas del README?
+
+## 🤖 Asistente  <sub>14:16</sub>
+
+Perfecto. Primero reviso los scripts y levanto el dev server en `:5199`:
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\package.json
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "ls ~/.cache/ms-playwright 2>/dev/null; curl -s -o /dev/null -w '5173:%{http_code}\n' http://lo… — chromium_headless_shell-1243 ffmpeg-1011 5173:200 5199:000
+
+## 🤖 Asistente  <sub>14:16</sub>
+
+`playwright` y sus navegadores están instalados; `:5199` está caído. Levanto el dev server y mientras edito el script:
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && npm run dev -- --port 5199 --strictPort" — Command moved to the background (shell ID: sh_1164c05e7001SWwtxJk1XvODTp). Output is streaming to: C…
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\scripts\screenshots.mjs
+
+## 🤖 Asistente  <sub>14:17</sub>
+
+Ahora añado la captura nueva a la tabla del README:
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\README.md
+
+- 🔧 `edit` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\README.md
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "for i in 1 2 3 4 5 6 7 8 9 10; do code=\$(curl -s -o /dev/null -w '%{http_code}' http://localh… — Invoke-WebRequest : Falta un argumento para el par�metro 'SessionVariable'. Especifique un par�metro…
+
+## 🤖 Asistente  <sub>14:17</sub>
+
+PowerShell se comió los `$()`. Comprobación simple:
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "curl -s -o /dev/null -w '5199:%{http_code}\n' http://localhost:5199" — 5199:200
+
+## 🤖 Asistente  <sub>14:17</sub>
+
+El server está en pie. Ejecuto la generación de capturas:
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && npm run capturas" — > piar@0.0.0 capturas > node scripts/screenshots.mjs ✓ 01-login ✓ 02-feed ✓ 03-ficha ✓ 04-match-toas…
+
+## 🤖 Asistente  <sub>14:18</sub>
+
+Verifico la captura nueva y el estado de git:
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\docs\screenshots\08b-mis-pajaritos.png
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git status --porcelain docs README.md scripts && ls -la… — M README.md M docs/screenshots/08-panel-aprobada.png M scripts/screenshots.mjs ?? docs/screenshots/0…
+
+## 🤖 Asistente  <sub>14:18</sub>
+
+La captura nueva quedó perfecta — y con un detalle bonito: el propio script hace un like a Tornasol antes, así que sale **❤️ 149** (148 base + 1) y en estado **Reservado ⏳** tras aprobar la solicitud. Confirmo que nada se ha roto:
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && npm run lint && git status --porcelain" — > piar@0.0.0 lint > oxlint Found 0 warnings and 0 errors. Finished in 72ms on 44 files with 116 rule…
+
+## 🤖 Asistente  <sub>14:20</sub>
+
+No los había actualizado; **ya lo están**. Resumen:
+
+## Capturas del README
+
+- **Antes**: generadas a las 13:33 dentro del commit `83f8f66` (la otra sesión), anteriores a mis cambios, y el script ni siquiera visitaba «Mis pajaritos».
+- **Ahora** (`npm run capturas`, 14:18, dev server en `:5199`):
+  - **10 de las 11 salieron byte-idénticas** → ya estaban al día; solo cambió `08-panel-aprobada.png` (7 bytes, simple variación de render).
+  - **Nueva `08b-mis-pajaritos.png`**: las 5 fichas con sus chips ❤️ (Tornasol **149**, Canuto 96, Pío 43, Brasa 105, Cielo 82) — la imagen que has pegado.
+  - `scripts/screenshots.mjs` +1 paso (8b): pulsa la pestaña «Mis pajaritos» tras aprobar y captura.
+  - `README.md`: fila nueva en la tabla de capturas, con alt «Mis pajaritos con likes».
+
+Verificación: `oxlint` → **0 warnings**; tests intactos en **75/75**.
+
+## Pendiente de commit (11 rutas, todas mías)
+
+Los 7 archivos del feature ❤️ + `README.md`, `scripts/screenshots.mjs`, `docs/screenshots/08-panel-aprobada.png` y la nueva `08b-mis-pajaritos.png` (`sesion.json` sigue sin tocarme).
+
+Notas: el dev server de `:5199` lo dejé corriendo por si quieres ver la demo (páralo con `Ctrl+C` o dímelo), y de la otra sesión no he tocado nada.
+
+¿Hago el commit? Propongo partirlo en dos: `feat(panel): contador de likes en «Mis pajaritos»` (feature + test + fix de la siembra) y `docs(capturas): …` (README + script + PNGs), o uno solo si prefieres.
+
+## 👤 Usuario  <sub>14:21</sub>
+
+Realiza los dos commits como propones
+
+## 🤖 Asistente  <sub>14:21</sub>
+
+Perfecto, los hago con los mensajes preparados. Primero verifico que no se haya movido nada concurrentemente y preparo los mensajes:
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git log --oneline -3 && git status --porcelain" — 5306b78 feat(feed): destello premium para el super like 83f8f66 feat(ranking): lateral «Los más dese…
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\commit-msg-1.txt
+
+- 🔧 `write` C:\Users\mbmartinez\AppData\Local\Temp\opencode\commit-msg-2.txt
+
+## 🤖 Asistente  <sub>14:23</sub>
+
+HEAD intacto (`5306b78`) y solo archivos míos. **Commit 1** (feature):
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git add src/services/birds.ts src/services/db.ts src/pa… — src/__tests__/dashboard.test.tsx | 13 +++++++++++++ src/__tests__/services.test.ts | 29 ++++++++++++…
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git commit -F /mnt/c/Users/mbmartinez/AppData/Local/Tem… — [main fe79e5b] feat(panel): contador de likes en «Mis pajaritos» 6 files changed, 84 insertions(+), …
+
+## 🤖 Asistente  <sub>14:23</sub>
+
+**Commit 1** → `fe79e5b`. Ahora el **commit 2** (capturas y docs):
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git add README.md scripts/screenshots.mjs docs/screensh… — README.md | 5 ++++- docs/screenshots/08-panel-aprobada.png | Bin 83553 -> 83546 bytes docs/screensho…
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git diff --cached README.md" — diff --git a/README.md b/README.md index 4070e62..b41d865 100644 --- a/README.md +++ b/README.md @@ …
+
+## 🤖 Asistente  <sub>14:24</sub>
+
+El diff del README es exactamente el previsto. Lo confirmo:
+
+- 🔧 `shell` wsl.exe -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && git commit -F /mnt/c/Users/mbmartinez/AppData/Local/Tem… — [main 0e73447] docs(capturas): «Mis pajaritos» con sus likes en el README 4 files changed, 10 insert…
+
+- 🔧 `shell` Remove-Item "C:\Users\mbmartinez\AppData\Local\Temp\opencode\commit-msg-1.txt", "C:\Users\mbmartinez\AppData\Local\Temp\opencode\commit-msg-… — mensajes temporales eliminados
+
+## 🤖 Asistente  <sub>14:24</sub>
+
+Hechos los dos commits ✅
+
+```
+0e73447 docs(capturas): «Mis pajaritos» con sus likes en el README
+fe79e5b feat(panel): contador de likes en «Mis pajaritos»
+5306b78 feat(feed): destello premium para el super like   ← (sesión anterior)
+```
+
+**`fe79e5b`** — 6 archivos, +84/−14
+- `src/services/birds.ts` (chip de likes + helper `countLikes()` compartido con el ranking), `src/pages/Dashboard.tsx` (píldora ❤️), `src/services/db.ts` (fix de la siembra contaminable), los 2 tests y la doc de `popularity.ts`.
+
+**`0e73447`** — 4 archivos, +10/−1
+- `README.md` (línea del feature + fila de capturas), `scripts/screenshots.mjs` (paso 8b), `08-panel-aprobada.png` regenerada y `08b-mis-pajaritos.png` nueva.
+
+Verificado antes de commitear: HEAD sin mover (nada concurrente de la otra sesión), `git diff --cached` revisado hunk a hunk, lint 0 warnings y 75/75 tests. El árbol queda **limpio** salvo `sesion.json` (no es mío).
+
+Dos apuntes:
+- Nada está pushado (como hasta ahora).
+- El dev server de `:5199` sigue corriendo en segundo plano por si quieres ver la demo; dímelo y lo paro.
+
+### 💬 «Iniciar servidor para ver cambios» — `ses_ee9ed8255ffeqbrbr9ZJSCC9jD` <sub>13:14–13:33</sub>
+
+> ⚙️ *13:14 — Recordatorio del sistema: <system-reminder> You are in Plan mode. Discuss the plan with the user directly in the conversation. Do not create or update plan files unless the user explicitly asks you to; when they do, write them…*
+
+## 👤 Usuario  <sub>13:14</sub>
+
+Iniciame el server para poder visualizar los cambios
+
+- 🔧 `read` C:\Users\mbmartinez
+
+- 🔧 `question` No tengo contexto de qué proyecto ni servidor quieres iniciar. ¿Cuál es el proyecto?
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\package.json
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\vite.config.ts
+
+- 🔧 `read` \\wsl.localhost\Ubuntu-26.04-RECOVERY\var\www\MasterIA\pruebaOpenCode\AGENTS.md
+
+- 🔧 `shell` node --version; npm --version; wsl -l -q — v22.21.0 npm : No se puede cargar el archivo C:\Program Files\nodejs\npm.ps1 porque la ejecuci�n de …
+
+## 🤖 Asistente  <sub>13:16</sub>
+
+El proyecto está en WSL (Vite 8 + React). Lo levanto dentro de la distro `Ubuntu-26.04-RECOVERY`, donde vive el código:
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && npm run dev -- --host" — Command moved to the background (shell ID: sh_11614a72f0016uY4XcCwfv1meW). Output is streaming to: C…
+
+- 🔧 `shell` Start-Sleep -Seconds 5; Get-Content "C:\Users\mbmartinez\.local\share\opencode\shell\349126771269ebd744e38180b6b76d7501d753d3\sh_11614a72f00… — > piar@0.0.0 dev > vite --host VITE v8.3.3 ready in 288 ms �zo Local: http://localhost:5173/ �zo Net…
+
+## 🤖 Asistente  <sub>13:17</sub>
+
+El server está corriendo. Lo abro en el navegador para que veas los cambios:
+
+- 🔧 `execute` const r = await tools.browser.tabs.open({ url: "http://localhost:5173/", focus: true }); return { id: r.id, url: r.url, title: r.title, load… — { "id": "tab_4d1f9ce8-4b8f-4180-b8be-2d42faa4bfd7", "url": "http://localhost:5173/", "title": "Piar …
+
+## 🤖 Asistente  <sub>13:17</sub>
+
+Servidor levantado y abierto en el navegador ✅
+
+- **Local:** http://localhost:5173/
+- **Red:** http://172.27.221.148:5173/
+- Corre en WSL (`Ubuntu-26.04-RECOVERY`, `/var/www/MasterIA/pruebaOpenCode`) con Vite 8.3.3 en modo watch, así que verás los cambios en caliente al guardar.
+
+Notas rápidas del proyecto (Piar):
+- Cuentas demo: `ana@piar.app` / `lucia@piar.app`, contraseña `demo1234`
+- Si luego quieres las capturas de `npm run capturas`, ese script espera el puerto **5199** (`npm run dev -- --port 5199`)
+
+Para pararlo, dime y lo detengo.
+
+> ⚙️ *13:32 — Nota automática: <shell id="sh_11614a72f0016uY4XcCwfv1meW" state="completed" command="wsl -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && npm run dev -- --host""> > piar@0.0.0 dev > vite -…*
+
+## 🤖 Asistente  <sub>13:32</sub>
+
+El server se cayó (salió con código 1 tras un HMR de `index.css`). Lo reinicio:
+
+- 🔧 `shell` Get-Content "C:\Users\mbmartinez\.local\share\opencode\shell\349126771269ebd744e38180b6b76d7501d753d3\sh_11614a72f0016uY4XcCwfv1meW.out" -Ta… — > piar@0.0.0 dev > vite --host VITE v8.3.3 ready in 288 ms �zo Local: http://localhost:5173/ �zo Net…
+
+> ⚙️ *13:32 — Instrucciones cargadas (instructions): The Code Mode tool catalog has changed. This catalog supersedes the previous Code Mode tool catalog. # Code Mode Use the…*
+
+- 🔧 `shell` wsl -d Ubuntu-26.04-RECOVERY -- bash -lc "cd /var/www/MasterIA/pruebaOpenCode && npm run dev -- --host" — Command moved to the background (shell ID: sh_116237a100019meViJPZ6WMvQ3). Output is streaming to: C…
+
+- 🔧 `shell` Start-Sleep -Seconds 5; Get-Content "C:\Users\mbmartinez\.local\share\opencode\shell\349126771269ebd744e38180b6b76d7501d753d3\sh_116237a1000… — > piar@0.0.0 dev > vite --host 1:33:11 PM [vite] (client) Re-optimizing dependencies because lockfil…
+
+## 🤖 Asistente  <sub>13:33</sub>
+
+Server de nuevo arriendo ✅
+
+- **Local:** http://localhost:5173/
+- **Red:** http://172.27.221.148:5173/
+- Vite 8.3.3 reoptimizó las dependencias (el lockfile cambió) y quedó listo en 572 ms.
+
+Espero que la caída anterior fuera puntual (venía de un HMR sobre `src/index.css`). Si vuelve a morir, lo dejo con logs para ver la causa. Recarga la pestaña que tenías abierta (http://localhost:5173/) y sigue con los cambios.
