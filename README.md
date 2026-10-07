@@ -26,6 +26,8 @@
 
 ### 🦜 Protectora
 - **Panel con estadísticas**: pajaritos, solicitudes pendientes, matches y adopciones.
+- **Likes por pajarito**: cada ficha de «Mis pajaritos» muestra sus ❤️
+  (base ficticia del MVP + los likes reales que va recibiendo).
 - **Gestión de solicitudes**: aprobar, rechazar y marcar como entregada
   (cada acción actualiza el estado del pájaro y notifica al adoptante).
 - **CRUD de pajaritos**: crear, editar y borrar fichas (con confirmación;
@@ -132,7 +134,8 @@ npm run lint      # oxlint sin warnings
 | ![Login](docs/screenshots/01-login.png) | ![Ficha](docs/screenshots/03-ficha.png) |
 | ![Match](docs/screenshots/04-match-toast.png) | ![Matches](docs/screenshots/05-matches.png) |
 | ![Solicitud](docs/screenshots/06-solicitud.png) | ![Panel protectora](docs/screenshots/07-panel-protectora.png) |
-| ![Aprobada](docs/screenshots/08-panel-aprobada.png) | ![Adopciones](docs/screenshots/09-adopciones.png) |
+| ![Mis pajaritos con likes](docs/screenshots/08b-mis-pajaritos.png) | ![Aprobada](docs/screenshots/08-panel-aprobada.png) |
+| ![Adopciones](docs/screenshots/09-adopciones.png) | |
 | ![Feed móvil](docs/screenshots/10-feed-mobile.png) | ![Notificaciones móvil](docs/screenshots/11-notificaciones-mobile.png) |
 
 Las capturas se generan con la demo real:

@@ -73,6 +73,12 @@ await page.waitForSelector('text=Aprobada 💚', { timeout: 5000 })
 await page.waitForTimeout(300)
 await shot('08-panel-aprobada')
 
+// 8b. Pestaña «Mis pajaritos»: fichas con el contador de likes ❤️
+await page.getByRole('button', { name: 'Mis pajaritos' }).click()
+await page.waitForSelector('text=Tornasol')
+await page.waitForTimeout(400)
+await shot('08b-mis-pajaritos')
+
 // 9. Adopciones de Ana (estado aprobado)
 await page.evaluate(() => localStorage.setItem('piar:session:v1', 'u1'))
 await page.goto(`${BASE}/adopciones`)
