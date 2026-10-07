@@ -14,7 +14,7 @@ Demo de adopción de pajaritos con swipe (React 19 + TS + Vite 8, Tailwind 4, Re
 
 - El script tiene hardcodeado `http://localhost:5199`: antes hay que levantar `npm run dev -- --port 5199`
 - Recorre la demo real en un flujo único con estado compartido (mismo navegador: el primer like hace match, cambia de usuario con `localStorage['piar:session:v1']`); sobrescribe los 11 PNG de `docs/screenshots/`
-- Requiere `playwright-core`, que **no está en package.json**: en esta máquina es un symlink a `/tmp/opencode/node_modules/playwright-core` (un `npm install` limpio lo elimina; ver README §Capturas)
+- Requiere `playwright-core` (devDependency, `^1.63.0`; antes era un symlink roto a `/tmp/opencode` que desaparecía al reiniciar WSL). Navegadores en `~/.cache/ms-playwright` (`chromium-headless-shell`); si falla el arranque: `npx playwright-core install chromium-headless-shell`
 - Los emojis salen en tofu si falta la fuente Noto Color Emoji en `~/.local/share/fonts/`
 
 ## Arquitectura (lo que no se deduce de los nombres)

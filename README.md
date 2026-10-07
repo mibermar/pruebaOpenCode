@@ -12,8 +12,11 @@
 
 ### 🐤 Adoptante
 - **Feed con swipe**: arrastra la tarjeta (← descartar, → like, ↑ super like) o usa los botones / teclado (← → ↑).
+  El **super like** lanza un destello premium (estrella, halo y destellos) antes de que la tarjeta salga hacia arriba.
   Toca la tarjeta para abrir su ficha.
 - **Filtros**: especie, ciudad, tamaño y edad máxima.
+- **Ranking «Los más deseados»**: lateral con el top 5 de pajaritos por likes
+  (cifra base ficticia del MVP + tus likes reales, que la suben al momento).
 - **Ficha completa**: historia, salud, carácter, energía y datos de la protectora.
 - **Matches**: cuando la protectora corresponde a tu like (llega una notificación en unos segundos).
 - **Solicitudes de adopción**: envía un mensaje y sigue su estado
@@ -82,7 +85,7 @@ probadas de forma independiente de la UI.
 
 ```
 src/
-├── components/    # SwipeCard (gestos), Layout+navbar, BirdForm, ui (botones…)
+├── components/    # SwipeCard (gestos), Layout+navbar, PopularSidebar, BirdForm, ui
 ├── pages/         # Login, Register, Feed, BirdDetail, Matches, Adoptions,
 │                  # Dashboard, Profile, NotFound
 ├── services/      # fake API (ver arriba)
@@ -90,13 +93,13 @@ src/
 ├── data/          # semilla: 15 pajaritos, 3 protectoras, usuarios demo
 ├── types/         # tipos compartidos (Bird, Match, AdoptionRequest…)
 ├── lib/           # utilidades (fallback de fotos)
-└── __tests__/     # 62 tests en 7 archivos
+└── __tests__/     # 71 tests en 7 archivos
 ```
 
 ## 🧪 Tests
 
 ```bash
-npm test          # ejecuta la suite (62 tests)
+npm test          # ejecuta la suite (71 tests)
 npm run test:watch
 ```
 

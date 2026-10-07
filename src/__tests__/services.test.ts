@@ -368,3 +368,47 @@ describe('notificaciones', () => {
     expect(notifications.unreadCountSync('u1')).toBe(0)
   })
 })
+
+describe('ranking «Los más deseados»', () => {
+  it('ordena por likes descendente y respeta el límite', async () => {
+    const top = await birds.getTopBirds(5)
+    expect(top).toHaveLength(5)
+    const likes = top.map((t) => t.likes)
+    expect(likes).toEqual([...likes].sort((a, b) => b - a))
+    expect(top[0].id).toBe('b1') // Tornasol: el base de popularity.ts es el más alto (148)
+  })
+
+  it('suma los swipes reales (like y superlike) al base ficticio', async () => {
+    const antes = (await birds.getTopBirds(15)).find((b) => b.id === 'b15')!
+    expect(antes.likes).toBe(29) // base de data/popularity.ts
+
+    await swipes.sendSwipe('u1', 'b15', 'like')
+    const otro = await auth.register({
+      name: 'Pepe',
+      email: 'pepe@test.com',
+      password: 'secreto1',
+      role: 'adoptante',
+    })
+    await swipes.sendSwipe(otro.id, 'b15', 'superlike')
+
+    const despues = (await birds.getTopBirds(15)).find((b) => b.id === 'b15')!
+    expect(despues.likes).toBe(31)
+  })
+
+  it('los dislikes no suman', async () => {
+    const antes = (await birds.getTopBirds(15)).find((b) => b.id === 'b9')!
+    await swipes.sendSwipe('u1', 'b9', 'dislike')
+    const despues = (await birds.getTopBirds(15)).find((b) => b.id === 'b9')!
+    expect(despues.likes).toBe(antes.likes)
+  })
+
+  it('excluye los pajaritos que no están disponibles', async () => {
+    const db = loadDb()
+    db.birds.find((b) => b.id === 'b1')!.status = 'adoptado'
+    saveDb(db)
+
+    const top = await birds.getTopBirds(20)
+    expect(top.some((b) => b.id === 'b1')).toBe(false)
+    expect(top.every((b) => b.status === 'disponible')).toBe(true)
+  })
+})

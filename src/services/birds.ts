@@ -1,4 +1,5 @@
 import type { Bird, BirdSize } from '../types'
+import { SEED_LIKES } from '../data/popularity'
 import { delay, loadDb, uid, updateDb } from './db'
 import { ApiError } from './errors'
 
@@ -42,6 +43,31 @@ export async function getBird(id: string): Promise<Bird> {
   const bird = loadDb().birds.find((b) => b.id === id)
   if (!bird) throw new ApiError('Este pajarito ya no está disponible 😔')
   return bird
+}
+
+/** Pájaro con su contador de likes para el ranking */
+export interface BirdWithLikes extends Bird {
+  likes: number
+}
+
+/**
+ * Ranking «Los más deseados» del MVP: likes base (data/popularity.ts, cifras
+ * ficticias de la demo) más los swipes reales de la sesión.
+ * Solo pájaros disponibles; los dislikes no suman.
+ */
+export async function getTopBirds(limit = 5): Promise<BirdWithLikes[]> {
+  await delay()
+  const db = loadDb()
+  const realLikes = new Map<string, number>()
+  for (const s of db.swipes) {
+    if (s.action === 'dislike') continue
+    realLikes.set(s.birdId, (realLikes.get(s.birdId) ?? 0) + 1)
+  }
+  return db.birds
+    .filter((b) => b.status === 'disponible')
+    .map((b) => ({ ...b, likes: (SEED_LIKES[b.id] ?? 0) + (realLikes.get(b.id) ?? 0) }))
+    .sort((a, b) => b.likes - a.likes || a.name.localeCompare(b.name))
+    .slice(0, limit)
 }
 
 export function filterBirds(birds: Bird[], filters: BirdFilters): Bird[] {
